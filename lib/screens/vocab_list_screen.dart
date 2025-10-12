@@ -944,8 +944,8 @@ class _VocabListScreenState extends State<VocabListScreen> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
-          margin: const EdgeInsets.only(bottom: 16),
-          decoration: BoxDecoration(
+            margin: const EdgeInsets.only(bottom: 16),
+            decoration: BoxDecoration(
             color: isSelected ? const Color(0xFF1132D4).withOpacity(0.1) : Colors.white,
             borderRadius: BorderRadius.circular(20), // More rounded
             border: isSelected
@@ -953,14 +953,14 @@ class _VocabListScreenState extends State<VocabListScreen> {
                 : isStudied 
                     ? Border.all(color: Colors.green.withOpacity(0.3), width: 2)
                     : null,
-            boxShadow: [
-              BoxShadow(
+              boxShadow: [
+                BoxShadow(
                 color: Colors.black.withOpacity(0.08), // Slightly stronger
                 blurRadius: 12, // Increased
                 offset: const Offset(0, 4), // Increased
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
           child: Material(
             color: Colors.transparent,
             child: InkWell(
