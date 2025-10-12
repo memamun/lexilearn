@@ -1,0 +1,1667 @@
+[
+  {
+    "word": "Abate",
+    "bengali_meaning": "দূর করা, হ্রাস পাওয়া, কমা, প্রশমিত করা",
+    "english_definition": "subside, or moderate"
+  },
+  {
+    "word": "Aberrant",
+    "bengali_meaning": "বিচ্যুত, বিপথগামী",
+    "english_definition": "abnormal, or deviant"
+  },
+  {
+    "word": "Abeyance",
+    "bengali_meaning": "মুলতবি অবস্থা, সাময়িক অক্রিয়তা",
+    "english_definition": "suspended action"
+  },
+  {
+    "word": "Abscond",
+    "bengali_meaning": "পলাতক হওয়া, আত্মগোপন করিয়া থাকা",
+    "english_definition": "depart secretly and hide"
+  },
+  {
+    "word": "Abstemious",
+    "bengali_meaning": "সংযমী, মিতাচারী",
+    "english_definition": "sparing in eating and drinking; temperate"
+  },
+  {
+    "word": "Admonish",
+    "bengali_meaning": "সতর্ক করা, সাবধান করে দেওয়া",
+    "english_definition": "warn; reprove"
+  },
+  {
+    "word": "Adulterate",
+    "bengali_meaning": "বিশুদ্ধতা নষ্ট করা, ভেজালমিশ্রিত, ব্যভিচা",
+    "english_definition": "make impure by adding inferior or tainted substances"
+  },
+  {
+    "word": "Aesthetic",
+    "bengali_meaning": "নান্দনিক, সৌন্দর্যবোধ সংক্রান্ত",
+    "english_definition": "artistic; dealing with or capable of appreciating the beautiful"
+  },
+  {
+    "word": "Aggregate",
+    "bengali_meaning": "সমষ্টিগত, একত্র করা",
+    "english_definition": "gather; accumulate"
+  },
+  {
+    "word": "Alacrity",
+    "bengali_meaning": "উৎসাহ, সানন্দ, ব্যগ্রতা, উদ্দীপনা",
+    "english_definition": "cheerful promptness; eagerness"
+  },
+  {
+    "word": "Alleviate",
+    "bengali_meaning": "উপশম, দূর করা",
+    "english_definition": "Relieve"
+  },
+  {
+    "word": "Amalgamate",
+    "bengali_meaning": "সংযুক্ত করা, সম্মিলিত করা",
+    "english_definition": "combine; unite in one body"
+  },
+  {
+    "word": "Ambiguous",
+    "bengali_meaning": "অস্পষ্ট, অনিশ্চিত, রহস্যময়",
+    "english_definition": "unclear or doubtful in meaning"
+  },
+  {
+    "word": "Ambivalence",
+    "bengali_meaning": "বিরোধ, দ্বিমুখিতা, অনিশ্চয়তা",
+    "english_definition": "the state of having contradictory or conflicting emotional attitudes"
+  },
+  {
+    "word": "Ameliorate",
+    "bengali_meaning": "উন্নত করা, উন্নতি করা, উজ্জর্ষ সাধন করা",
+    "english_definition": "Improve"
+  },
+  {
+    "word": "Anachronism",
+    "bengali_meaning": "কালব্যতিক্রম, কালবৈষম্য",
+    "english_definition": "something or someone misplaced in time"
+  },
+  {
+    "word": "Analogous",
+    "bengali_meaning": "অনুরূপ, তুলনীয়",
+    "english_definition": "Comparable"
+  },
+  {
+    "word": "Anarchy",
+    "bengali_meaning": "নৈরাজ্য, অরাজকতা, বিশৃঙ্খলা",
+    "english_definition": "absence of governing body; state of disorder"
+  },
+  {
+    "word": "Anomalous",
+    "bengali_meaning": "ব্যতিক্রমী, অস্বাভাবিক",
+    "english_definition": "abnormal; irregular"
+  },
+  {
+    "word": "Antipathy",
+    "bengali_meaning": "বিরোধিতা, বিদ্বেষ",
+    "english_definition": "aversion; dislike"
+  },
+  {
+    "word": "Apathy",
+    "bengali_meaning": "উদাসীনতা, অরূচি",
+    "english_definition": "lack of caring; indifference"
+  },
+  {
+    "word": "Appease",
+    "bengali_meaning": "রশমিত করা, খুশি করা",
+    "english_definition": "pacify or soothe; relieve"
+  },
+  {
+    "word": "Apprise",
+    "bengali_meaning": "জ্ঞাপন করা",
+    "english_definition": "Inform"
+  },
+  {
+    "word": "Approbation",
+    "bengali_meaning": "অনুমোদন",
+    "english_definition": "Approval"
+  },
+  {
+    "word": "Appropriate",
+    "bengali_meaning": "উপযুক্ত, যথাযথ",
+    "english_definition": "acquire; take possession of for one's own use"
+  },
+  {
+    "word": "Arduous",
+    "bengali_meaning": "শ্রমসাধ্য, কষ্টসাধ্য",
+    "english_definition": "hard; strenuous"
+  },
+  {
+    "word": "Artless",
+    "bengali_meaning": "সরল, কৌশলহীন",
+    "english_definition": "without guile; open and honest"
+  },
+  {
+    "word": "Ascetic",
+    "bengali_meaning": "সাধু, যোগী",
+    "english_definition": "practicing self-denial; austere"
+  },
+  {
+    "word": "Assiduous",
+    "bengali_meaning": "উদ্যোগী, পরিশ্রমী",
+    "english_definition": "Diligent"
+  },
+  {
+    "word": "Assuage",
+    "bengali_meaning": "উপশম করা, হ্রাস করা",
+    "english_definition": "ease or lessen (pain); satisfy (hunger); soothe (anger)"
+  },
+  {
+    "word": "Attenuate",
+    "bengali_meaning": "কাহিল, মূল্য কমান",
+    "english_definition": "make thinner"
+  },
+  {
+    "word": "Audacious",
+    "bengali_meaning": "দুঃসাহসী, উদ্ধত",
+    "english_definition": "daring; bold"
+  },
+  {
+    "word": "Austere",
+    "bengali_meaning": "কঠোর, কঠোর আত্মসংযমী",
+    "english_definition": "forbiddingly stern; severely simple and unornamented"
+  },
+  {
+    "word": "Autonomous",
+    "bengali_meaning": "স্বায়ত্বশাসিত, স্বশাসিত",
+    "english_definition": "self-governing; independent"
+  },
+  {
+    "word": "Aver",
+    "bengali_meaning": "আছে",
+    "english_definition": "assert confidently or declare; as used in law, state formally as a fact"
+  },
+  {
+    "word": "Banal",
+    "bengali_meaning": "গতানুগতিক, মামুলি",
+    "english_definition": "hackneyed; commonplace; trite; lacking originality"
+  },
+  {
+    "word": "Belie",
+    "bengali_meaning": "মিথ্যা ধারণা জন্মান, প্রমাণ করিতে অমর্থন হওযা",
+    "english_definition": "contradict; give a false impression"
+  },
+  {
+    "word": "Beneficent",
+    "bengali_meaning": "দয়ালু, দানশীল",
+    "english_definition": "kindly; doing good"
+  },
+  {
+    "word": "Bolster",
+    "bengali_meaning": "কোলবালিশ, ঠেস দেওয়ান",
+    "english_definition": "support; reinforce"
+  },
+  {
+    "word": "Bombastic",
+    "bengali_meaning": "শব্দাড়ম্বরপূর্ণ, অত্যধিক জমকালো",
+    "english_definition": "pompous; using inflated language"
+  },
+  {
+    "word": "Boorish",
+    "bengali_meaning": "বর্বর, গেঁয়ো",
+    "english_definition": "rude; insensitive"
+  },
+  {
+    "word": "Burgeon",
+    "bengali_meaning": "পাতা ধরা, মুকুল",
+    "english_definition": "grow forth; send out buds"
+  },
+  {
+    "word": "Burnish",
+    "bengali_meaning": "পালিশ করা, চাকচক্য",
+    "english_definition": "make shiny by rubbing; polish"
+  },
+  {
+    "word": "Buttress",
+    "bengali_meaning": "ঠেকনো, শক্তিশালী করা",
+    "english_definition": "support; prop up"
+  },
+  {
+    "word": "Capricious",
+    "bengali_meaning": "খামখেয়ালী, অনিয়মিত",
+    "english_definition": "unpredictable; fickle"
+  },
+  {
+    "word": "Castigation",
+    "bengali_meaning": "কঠোর সমালোচনা, শাস্তি",
+    "english_definition": "punishment; severe criticism"
+  },
+  {
+    "word": "Catalyst",
+    "bengali_meaning": "অনুঘটক",
+    "english_definition": "agent that increases the pace of a chemical action"
+  },
+  {
+    "word": "Caustic",
+    "bengali_meaning": "দগ্ধকারক পদার্থ, দাহক",
+    "english_definition": "burning; sarcastically biting"
+  },
+  {
+    "word": "Chicanery",
+    "bengali_meaning": "প্রতারণা, ছল",
+    "english_definition": "trickery; deception"
+  },
+  {
+    "word": "Coagulate",
+    "bengali_meaning": "জমাট বাঁধা, ঘনীভূত হওয়া",
+    "english_definition": "thicken; congeal; clot"
+  },
+  {
+    "word": "Coda",
+    "bengali_meaning": "সংক্ষিপ্ত করা",
+    "english_definition": "concluding section of a musical or literary composition; summarizes or concludes"
+  },
+  {
+    "word": "Cogent",
+    "bengali_meaning": "প্রবল, জোরালো",
+    "english_definition": "convincing"
+  },
+  {
+    "word": "Commensurate",
+    "bengali_meaning": "আনুপাতিক",
+    "english_definition": "corresponding in extent, degree, etc.; proportionate"
+  },
+  {
+    "word": "Compendium",
+    "bengali_meaning": "সারসংক্ষেপ",
+    "english_definition": "brief, comprehensive summary"
+  },
+  {
+    "word": "Complaisant",
+    "bengali_meaning": "প্রদায়ক, পরোপকারী",
+    "english_definition": "trying to please; overly polite; obliging"
+  },
+  {
+    "word": "Compliant",
+    "bengali_meaning": "সঙ্গতিশীল, বিনয়ী",
+    "english_definition": "yielding; conforming to requirements"
+  },
+  {
+    "word": "Conciliatory",
+    "bengali_meaning": "বন্ধুত্বপূর্ণ",
+    "english_definition": "reconciling; soothing"
+  },
+  {
+    "word": "Condone",
+    "bengali_meaning": "ক্ষমা করা, মকুব করা",
+    "english_definition": "overlook; forgive; give tacit approval; excuse"
+  },
+  {
+    "word": "Confound",
+    "bengali_meaning": "ভুল করা",
+    "english_definition": "confuse; puzzle"
+  },
+  {
+    "word": "Connoisseur",
+    "bengali_meaning": "রসপণ্ডিত, শিল্পকলা প্রভৃতির সমঝদার",
+    "english_definition": "person competent to act as a judge of art; a lover of art"
+  },
+  {
+    "word": "Contention",
+    "bengali_meaning": "বিবাদ, যুক্তি",
+    "english_definition": "claim; thesis"
+  },
+  {
+    "word": "Contentious",
+    "bengali_meaning": "কুস্বভাব",
+    "english_definition": "quarrelsome"
+  },
+  {
+    "word": "Contrite",
+    "bengali_meaning": "অনুতপ্ত",
+    "english_definition": "penitent"
+  },
+  {
+    "word": "Conundrum",
+    "bengali_meaning": "হেঁয়ালি",
+    "english_definition": "riddle; difficult problem"
+  },
+  {
+    "word": "Converge",
+    "bengali_meaning": "একই বিন্দুতে মিলিত হওয়া",
+    "english_definition": "approach; tend to meet; come together"
+  },
+  {
+    "word": "Convoluted",
+    "bengali_meaning": "বাঁকানো, জটিল",
+    "english_definition": "coiled around; involved; intricate"
+  },
+  {
+    "word": "Craven",
+    "bengali_meaning": "কাপুরুষ",
+    "english_definition": "cowardly"
+  },
+  {
+    "word": "Daunt",
+    "bengali_meaning": "ভয় দেখানো",
+    "english_definition": "intimidate; frighten"
+  },
+  {
+    "word": "Decorum",
+    "bengali_meaning": "ভদ্রতা",
+    "english_definition": "propriety; orderliness and good taste in manners"
+  },
+  {
+    "word": "Default",
+    "bengali_meaning": "অনুপস্থিতি",
+    "english_definition": "failure to act"
+  },
+  {
+    "word": "Deference",
+    "bengali_meaning": "মানিয়া লওয়া",
+    "english_definition": "courteous regard for another's wishes"
+  },
+  {
+    "word": "Delineate",
+    "bengali_meaning": "বর্ণনা করা",
+    "english_definition": "portray; depict; sketch"
+  },
+  {
+    "word": "Denigrate",
+    "bengali_meaning": "কলঙ্কিত করা, হেয় করা",
+    "english_definition": "blacken"
+  },
+  {
+    "word": "Deride",
+    "bengali_meaning": "উপহাস করা, বিদ্রূপ করা",
+    "english_definition": "ridicule; make fun of"
+  },
+  {
+    "word": "Derivative",
+    "bengali_meaning": "শিক্ষাদীক্ষিক",
+    "english_definition": "unoriginal; obtained from another source"
+  },
+  {
+    "word": "Desiccate",
+    "bengali_meaning": "শুষ্ক করা, শুকান",
+    "english_definition": "dry up"
+  },
+  {
+    "word": "Desultory",
+    "bengali_meaning": "এলোমেলো",
+    "english_definition": "aimless; haphazard; digressing at random"
+  },
+  {
+    "word": "Deterrent",
+    "bengali_meaning": "প্রতিবন্ধক",
+    "english_definition": "Something that discourages; hindrance"
+  },
+  {
+    "word": "Diatribe",
+    "bengali_meaning": "সুদীর্ঘ আলোচণা",
+    "english_definition": "bitter scolding; invective"
+  },
+  {
+    "word": "Dichotomy",
+    "bengali_meaning": "বৈপরীত্য, দ্বিবিভাজন",
+    "english_definition": "split; branching into two parts (especially contradictory ones)"
+  },
+  {
+    "word": "Diffidence",
+    "bengali_meaning": "অবিশ্বাস",
+    "english_definition": "Shyness"
+  },
+  {
+    "word": "Diffuse",
+    "bengali_meaning": "মেলা",
+    "english_definition": "wordy, rambling, spread out (like a gas)"
+  },
+  {
+    "word": "Digression",
+    "bengali_meaning": "অবান্তরতা",
+    "english_definition": "Wandering away from the subject"
+  },
+  {
+    "word": "Dirge",
+    "bengali_meaning": "গান, অন্ত্যোষ্টিগাথা",
+    "english_definition": "Lament with music"
+  },
+  {
+    "word": "Disabuse",
+    "bengali_meaning": "ভুল ধারণা বা মোহ থেকে মুক্ত করা",
+    "english_definition": "correct a false impression; undeceive"
+  },
+  {
+    "word": "Discerning",
+    "bengali_meaning": "নির্ণায়ক",
+    "english_definition": "mentally quick and observant; having insight"
+  },
+  {
+    "word": "Discordant",
+    "bengali_meaning": "বিসদৃশ",
+    "english_definition": "not harmonious; conflicting"
+  },
+  {
+    "word": "Discredit",
+    "bengali_meaning": "সুনামহানি, কল",
+    "english_definition": "defame; destroy confidence in; disbelieve"
+  },
+  {
+    "word": "Discrepancy",
+    "bengali_meaning": "অমিল",
+    "english_definition": "lack of consistency; difference"
+  },
+  {
+    "word": "Discrete",
+    "bengali_meaning": "স্বতন্ত্র",
+    "english_definition": "separate; unconnected; consisting of distinct parts"
+  },
+  {
+    "word": "Disingenuous",
+    "bengali_meaning": "অন্ত: সারশূণ্য",
+    "english_definition": "lacking genuine candor; insincere"
+  },
+  {
+    "word": "Disinterested",
+    "bengali_meaning": "অনিচ্ছুক",
+    "english_definition": "Unprejudiced"
+  },
+  {
+    "word": "Disjointed",
+    "bengali_meaning": "টুকরা টুকরা",
+    "english_definition": "lacking coherence; separated at the joints"
+  },
+  {
+    "word": "Dismiss",
+    "bengali_meaning": "খারিজ, বাদ দেওয়া",
+    "english_definition": "eliminate from consideration; reject"
+  },
+  {
+    "word": "Disparage",
+    "bengali_meaning": "অবজ্ঞা করা",
+    "english_definition": "Belittle"
+  },
+  {
+    "word": "Disparate",
+    "bengali_meaning": "অসম",
+    "english_definition": "basically different; unrelated"
+  },
+  {
+    "word": "Dissemble",
+    "bengali_meaning": "গোপন রাখা",
+    "english_definition": "disguise; pretend"
+  },
+  {
+    "word": "Disseminate",
+    "bengali_meaning": "প্রচার করা",
+    "english_definition": "distribute; spread; scatter (like seeds)"
+  },
+  {
+    "word": "Dissolution",
+    "bengali_meaning": "শিথিলীকরণ",
+    "english_definition": "disintegration; looseness in morals"
+  },
+  {
+    "word": "Dissonance",
+    "bengali_meaning": "অনৈক্য",
+    "english_definition": "discord; opposite of harmony"
+  },
+  {
+    "word": "Distend",
+    "bengali_meaning": "ফাঁপা",
+    "english_definition": "expand; swell out"
+  },
+  {
+    "word": "Distill",
+    "bengali_meaning": "পাতন করা, বিশুদ্ধ করা",
+    "english_definition": "purify; refine; concentrate"
+  },
+  {
+    "word": "Diverge",
+    "bengali_meaning": "বিপথগামী হওযা",
+    "english_definition": "vary; go in different directions from the same point"
+  },
+  {
+    "word": "Divest",
+    "bengali_meaning": "পরিত্যাগ করা",
+    "english_definition": "strip; deprive"
+  },
+  {
+    "word": "Document",
+    "bengali_meaning": "দলিল, নথিপত্র",
+    "english_definition": "provide written evidence"
+  },
+  {
+    "word": "Dogmatic",
+    "bengali_meaning": "উদ্ধত",
+    "english_definition": "opinionated; arbitrary; doctrinal"
+  },
+  {
+    "word": "Dormant",
+    "bengali_meaning": "সপ্ত",
+    "english_definition": "sleeping; lethargic; latent"
+  },
+  {
+    "word": "Dupe",
+    "bengali_meaning": "প্রতারণা করা",
+    "english_definition": "someone easily fooled"
+  },
+  {
+    "word": "Ebullient",
+    "bengali_meaning": "উত্তেজিত",
+    "english_definition": "showing excitement; overflowing with enthusiasm"
+  },
+  {
+    "word": "Eclectic",
+    "bengali_meaning": "সারগ্রাহী",
+    "english_definition": "selective; composed of elements drawn from disparate sources"
+  },
+  {
+    "word": "Efficacy",
+    "bengali_meaning": "ফলপ্রসূতা, কার্যক্ষমতা",
+    "english_definition": "power to produce desired effect"
+  },
+  {
+    "word": "Effrontery",
+    "bengali_meaning": "বেহায়াপনা",
+    "english_definition": "impudence; shameless boldness; sheer nerve; presumptuousness"
+  },
+  {
+    "word": "Elegy",
+    "bengali_meaning": "শোকসঙ্গীত",
+    "english_definition": "poem or song expressing lamentation"
+  },
+  {
+    "word": "Elicit",
+    "bengali_meaning": "প্রকাশ করা",
+    "english_definition": "draw out by discussion"
+  },
+  {
+    "word": "Embellish",
+    "bengali_meaning": "সুশোভিত করা",
+    "english_definition": "adorn; ornament; enhance, as a story"
+  },
+  {
+    "word": "Empirical",
+    "bengali_meaning": "গবেষণামূলক",
+    "english_definition": "based on experience"
+  },
+  {
+    "word": "Emulate",
+    "bengali_meaning": "অনুকরণ",
+    "english_definition": "imitate; rival"
+  },
+  {
+    "word": "Emulate",
+    "bengali_meaning": "সমকক্ষ হইতে বা ছাপাইয়া যাইতে চেষ্ঠা",
+    "english_definition": "prevailing among a specific group of people or in a specific area or country"
+  },
+  {
+    "word": "Enervate",
+    "bengali_meaning": "দুর্বল করা",
+    "english_definition": "Weaken"
+  },
+  {
+    "word": "Engender",
+    "bengali_meaning": "প্রসব করা, জন্ম দেওয়া",
+    "english_definition": "cause; produce"
+  },
+  {
+    "word": "Enhance",
+    "bengali_meaning": "উন্নত করা",
+    "english_definition": "increase; improve"
+  },
+  {
+    "word": "Ephemeral",
+    "bengali_meaning": "অল্পক্ষণস্থায়ী",
+    "english_definition": "short-lived; fleeting"
+  },
+  {
+    "word": "Equanimity",
+    "bengali_meaning": "মনের বা মেজাজের সমতা অথবা",
+    "english_definition": "calmness of temperament; composure"
+  },
+  {
+    "word": "Equivocate",
+    "bengali_meaning": "দ্ব্যর্থবোধক বাক্য ব্যবহার করা",
+    "english_definition": "lie; mislead; attempt to conceal the truth"
+  },
+  {
+    "word": "Erudite",
+    "bengali_meaning": "পাণ্ডিতাপূর্ণ",
+    "english_definition": "learned; scholarly"
+  },
+  {
+    "word": "Esoteric",
+    "bengali_meaning": "লুকনো",
+    "english_definition": "hard to understand; known only to the chosen few"
+  },
+  {
+    "word": "Eulogy",
+    "bengali_meaning": "প্রশংসা",
+    "english_definition": "expression of praise, often on the occasion of someone's death"
+  },
+  {
+    "word": "Euphemism",
+    "bengali_meaning": "শ্রুতিকটু পদের পরিবর্তে কোমলতর",
+    "english_definition": "mild expression in place of an unpleasant one"
+  },
+  {
+    "word": "Exacerbate",
+    "bengali_meaning": "বিরক্ত করা",
+    "english_definition": "worsen; embitter"
+  },
+  {
+    "word": "Exculpate",
+    "bengali_meaning": "দোষক্ষালন করা",
+    "english_definition": "clear from blame"
+  },
+  {
+    "word": "Exigency",
+    "bengali_meaning": "জরুরি অবস্থা",
+    "english_definition": "urgent situation; pressing needs or demands; state of requiring immediate attention"
+  },
+  {
+    "word": "Extrapolation",
+    "bengali_meaning": "বহির্পাতন",
+    "english_definition": "projection; conjecture"
+  },
+  {
+    "word": "Facetious",
+    "bengali_meaning": "মজা-করা",
+    "english_definition": "joking (often inappropriately); humorous"
+  },
+  {
+    "word": "Facilitate",
+    "bengali_meaning": "সহজসাধ্য করে তোলা",
+    "english_definition": "help bring about; make less difficult"
+  },
+  {
+    "word": "Fallacious",
+    "bengali_meaning": "ভ্রান্ত",
+    "english_definition": "false; misleading"
+  },
+  {
+    "word": "Fatuous",
+    "bengali_meaning": "নির্বোধ, উদ্দেশ্যহীন",
+    "english_definition": "brainless; inane; foolish, yet smug"
+  },
+  {
+    "word": "Fawning",
+    "bengali_meaning": "",
+    "english_definition": "trying to please by behaving obsequiously, flattering, or cringing"
+  },
+  {
+    "word": "Felicitous",
+    "bengali_meaning": "নিখুঁত",
+    "english_definition": "apt; suitably expressed; well chosen"
+  },
+  {
+    "word": "Fervor",
+    "bengali_meaning": "উৎসাহ",
+    "english_definition": "glowing ardor; intensity of feeling"
+  },
+  {
+    "word": "Flag",
+    "bengali_meaning": "পতাকা",
+    "english_definition": "droop; grow feeble"
+  },
+  {
+    "word": "Fledgling",
+    "bengali_meaning": "জাতপক্ষ",
+    "english_definition": "inexperienced"
+  },
+  {
+    "word": "Flout",
+    "bengali_meaning": "উড়িয়ে দেওয়া",
+    "english_definition": "reject; mock; show contempt for"
+  },
+  {
+    "word": "Foment",
+    "bengali_meaning": "লালন করা",
+    "english_definition": "stir up; instigate"
+  },
+  {
+    "word": "Forestall",
+    "bengali_meaning": "কিছু আগে করা",
+    "english_definition": "prevent by taking action in advance"
+  },
+  {
+    "word": "Frugality",
+    "bengali_meaning": "সংযম",
+    "english_definition": "thrift; economy"
+  },
+  {
+    "word": "Futile",
+    "bengali_meaning": "অকার্যকর",
+    "english_definition": "useless; hopeless; ineffectual"
+  },
+  {
+    "word": "Gainsay",
+    "bengali_meaning": "প্রতিবাদ করা",
+    "english_definition": "deny"
+  },
+  {
+    "word": "Garrulous",
+    "bengali_meaning": "বাচাল",
+    "english_definition": "loquacious; talkative; wordy"
+  },
+  {
+    "word": "Goad",
+    "bengali_meaning": "উদ্দীপনা",
+    "english_definition": "urge on"
+  },
+  {
+    "word": "Gouge",
+    "bengali_meaning": "প্রতারণা",
+    "english_definition": "overcharge"
+  },
+  {
+    "word": "Grandiloquent",
+    "bengali_meaning": "জমকাল",
+    "english_definition": "pompous; bombastic; using high-sounding language"
+  },
+  {
+    "word": "Gregarious",
+    "bengali_meaning": "দলপ্রিয়, সঙ্গলিঙ্গু",
+    "english_definition": "sociable"
+  },
+  {
+    "word": "Guileless",
+    "bengali_meaning": "সরল",
+    "english_definition": "without deceit"
+  },
+  {
+    "word": "Gullible",
+    "bengali_meaning": "অতিসরল",
+    "english_definition": "easily deceived"
+  },
+  {
+    "word": "Harangue",
+    "bengali_meaning": "বাগাড়ম্বরপূর্ণ বক্তৃতা",
+    "english_definition": "long, passionate, and vehement speech"
+  },
+  {
+    "word": "Homogeneous",
+    "bengali_meaning": "সমজাতিক",
+    "english_definition": "of the same kind"
+  },
+  {
+    "word": "Hyperbole",
+    "bengali_meaning": "অতিশযোকি",
+    "english_definition": "exaggeration; overstatement"
+  },
+  {
+    "word": "Iconoclastic",
+    "bengali_meaning": "কালাপাহাড়ী",
+    "english_definition": "attacking cherished traditions"
+  },
+  {
+    "word": "Idolatry",
+    "bengali_meaning": "মূর্তিপূজা, অত্যধিক শ্রদ্ধা",
+    "english_definition": "worship of idols; excessive admiration"
+  },
+  {
+    "word": "Immutable",
+    "bengali_meaning": "অপরিবর্তনীয়",
+    "english_definition": "unchangeable"
+  },
+  {
+    "word": "Impair",
+    "bengali_meaning": "দুর্বল করা",
+    "english_definition": "injure; hurt"
+  },
+  {
+    "word": "Impassive",
+    "bengali_meaning": "অনড",
+    "english_definition": "without feeling; imperturbable; stoical"
+  },
+  {
+    "word": "Impede",
+    "bengali_meaning": "বাধা দেওয়া",
+    "english_definition": "hinder; block"
+  },
+  {
+    "word": "Impermeable",
+    "bengali_meaning": "জলরোধী",
+    "english_definition": "impervious; not permitting passage through its substance"
+  },
+  {
+    "word": "Imperturbable",
+    "bengali_meaning": "শান্ত",
+    "english_definition": "calm; placid"
+  },
+  {
+    "word": "Impervious",
+    "bengali_meaning": "অভেদ্য, অসংবেদী",
+    "english_definition": "impenetrable; incapable of being damaged or distressed"
+  },
+  {
+    "word": "Implacable",
+    "bengali_meaning": "নিষ্ঠুর",
+    "english_definition": "incapable of being pacified"
+  },
+  {
+    "word": "Implicit",
+    "bengali_meaning": "অন্তর্নিহিত",
+    "english_definition": "understood but not stated"
+  },
+  {
+    "word": "Implode",
+    "bengali_meaning": "কেন্দ্রীভূত করা",
+    "english_definition": "burst inward"
+  },
+  {
+    "word": "Inadvertently",
+    "bengali_meaning": "অনবধানতাবশত",
+    "english_definition": "unintentionally; by oversight; carelessly"
+  },
+  {
+    "word": "Inchoate",
+    "bengali_meaning": "অপরিণত",
+    "english_definition": "recently begun; rudimentary; elementary"
+  },
+  {
+    "word": "Incongruity",
+    "bengali_meaning": "অনৈক্য",
+    "english_definition": "lack of harmony; absurdity"
+  },
+  {
+    "word": "Inconsequential",
+    "bengali_meaning": "তুচ্ছ",
+    "english_definition": "insignificant; unimportant"
+  },
+  {
+    "word": "Incorporate",
+    "bengali_meaning": "বিদেহী",
+    "english_definition": "introduce something into a larger whole; combine; unite"
+  },
+  {
+    "word": "Indeterminate",
+    "bengali_meaning": "অনির্দিষ্ট",
+    "english_definition": "uncertain; not clearly fixed; indefinite"
+  },
+  {
+    "word": "Indigence",
+    "bengali_meaning": "দারিদ্র্য",
+    "english_definition": "Poverty"
+  },
+  {
+    "word": "Indolent",
+    "bengali_meaning": "কুড়ে, অলস",
+    "english_definition": "Lazy"
+  },
+  {
+    "word": "Inert",
+    "bengali_meaning": "অলস",
+    "english_definition": "inactive; lacking power to move"
+  },
+  {
+    "word": "Ingenuous",
+    "bengali_meaning": "অকপট",
+    "english_definition": "naive and trusting; young; unsophisticated"
+  },
+  {
+    "word": "Inherent",
+    "bengali_meaning": "সহজাত",
+    "english_definition": "firmly established by nature or habit"
+  },
+  {
+    "word": "Innocuous",
+    "bengali_meaning": "নির্দোষ",
+    "english_definition": "Harmless"
+  },
+  {
+    "word": "Insensible",
+    "bengali_meaning": "নির্বিকার",
+    "english_definition": "unconscious; unresponsive"
+  },
+  {
+    "word": "Insinuate",
+    "bengali_meaning": "কটাক্ষ করা",
+    "english_definition": "hint; imply; creep in"
+  },
+  {
+    "word": "Insipid",
+    "bengali_meaning": "স্বাদহীন, পানসে",
+    "english_definition": "lacking in flavor; dull"
+  },
+  {
+    "word": "Insularity",
+    "bengali_meaning": "সংকীর্ণচিত্ততা",
+    "english_definition": "narrow-mindedness; isolation"
+  },
+  {
+    "word": "Intractable",
+    "bengali_meaning": "অবাধ্য",
+    "english_definition": "unruly; stubborn; unyielding"
+  },
+  {
+    "word": "Intransigence",
+    "bengali_meaning": "জেদীতা",
+    "english_definition": "refusal of any compromise; stubbornness"
+  },
+  {
+    "word": "Inundate",
+    "bengali_meaning": "নিমজ্জিত করা",
+    "english_definition": "overwhelm; flood; submerge"
+  },
+  {
+    "word": "Inured",
+    "bengali_meaning": "অভ্যন্ত",
+    "english_definition": "accustomed; hardened"
+  },
+  {
+    "word": "Invective",
+    "bengali_meaning": "আক্রমণমূলক, কটুকি",
+    "english_definition": "Abuse"
+  },
+  {
+    "word": "Irascible",
+    "bengali_meaning": "খিটখিটে",
+    "english_definition": "irritable; easily angered"
+  },
+  {
+    "word": "Irresolute",
+    "bengali_meaning": "চঞ্চলমতি",
+    "english_definition": "uncertain how to act; weak"
+  },
+  {
+    "word": "Itinerary",
+    "bengali_meaning": "ভ্রমণপথ",
+    "english_definition": "plan of a trip"
+  },
+  {
+    "word": "Laconic",
+    "bengali_meaning": "মিতবাক",
+    "english_definition": "brief and to the point"
+  },
+  {
+    "word": "Lassitude",
+    "bengali_meaning": "শ্রান্তি",
+    "english_definition": "languor; weariness"
+  },
+  {
+    "word": "Latent",
+    "bengali_meaning": "অন্তর্নিহিত",
+    "english_definition": "potential but undeveloped; dormant; hidden"
+  },
+  {
+    "word": "Laud",
+    "bengali_meaning": "গুণকীর্তন",
+    "english_definition": "Praise"
+  },
+  {
+    "word": "Lethargic",
+    "bengali_meaning": "অলস",
+    "english_definition": "drowsy; dull"
+  },
+  {
+    "word": "Levee",
+    "bengali_meaning": "নদীতীরের বাঁধ, নদীর উঁচু পাড়, বাঁধ",
+    "english_definition": "stone embankment to prevent flooding"
+  },
+  {
+    "word": "Levity",
+    "bengali_meaning": "ছ্যাবলামি",
+    "english_definition": "lack of seriousness or steadiness; frivolity"
+  },
+  {
+    "word": "Log",
+    "bengali_meaning": "বাধা",
+    "english_definition": "record of a voyage or flight; record of day-to-day activities"
+  },
+  {
+    "word": "Loquacious",
+    "bengali_meaning": "বহুভাষী",
+    "english_definition": "Talkative"
+  },
+  {
+    "word": "Lucid",
+    "bengali_meaning": "পরিষ্কার",
+    "english_definition": "easily understood; clear; intelligible"
+  },
+  {
+    "word": "Luminous",
+    "bengali_meaning": "উজ্জ্বল",
+    "english_definition": "shining; issuing light"
+  },
+  {
+    "word": "Magnanimity",
+    "bengali_meaning": "মহানুভবতা, মহত্ত",
+    "english_definition": "Generosity"
+  },
+  {
+    "word": "Malingerer",
+    "bengali_meaning": "রোগভানকারী",
+    "english_definition": "one who feigns illness to escape duty"
+  },
+  {
+    "word": "Malleable",
+    "bengali_meaning": "ঘাতসহ",
+    "english_definition": "capable of being shaped by pounding; impressionable"
+  },
+  {
+    "word": "Maverick",
+    "bengali_meaning": "বাউন্ডুলে",
+    "english_definition": "rebel; nonconformist"
+  },
+  {
+    "word": "Mendacious",
+    "bengali_meaning": "মিথ্যাবাদী",
+    "english_definition": "lying; habitually dishonest"
+  },
+  {
+    "word": "Metamorphosis",
+    "bengali_meaning": "রুপান্তর",
+    "english_definition": "change of form"
+  },
+  {
+    "word": "Meticulous",
+    "bengali_meaning": "অতিসতর্ক",
+    "english_definition": "excessively careful; painstaking; scrupulous"
+  },
+  {
+    "word": "Misanthrope",
+    "bengali_meaning": "মানুষ্যবিদ্বেষী",
+    "english_definition": "one who hates mankind"
+  },
+  {
+    "word": "Mitigate",
+    "bengali_meaning": "উপশম করা, রশমিত করা",
+    "english_definition": "appease; moderate"
+  },
+  {
+    "word": "Mollify",
+    "bengali_meaning": "শান্ত করা",
+    "english_definition": "Soothe"
+  },
+  {
+    "word": "Morose",
+    "bengali_meaning": "অন্ধকারাচ্ছন",
+    "english_definition": "ill-humored; sullen; melancholy"
+  },
+  {
+    "word": "Mundane",
+    "bengali_meaning": "জাগতিক",
+    "english_definition": "worldly as opposed to spiritual; everyday"
+  },
+  {
+    "word": "Negate",
+    "bengali_meaning": "অস্বীকার করা",
+    "english_definition": "cancel out; nullify; deny"
+  },
+  {
+    "word": "Neophyte",
+    "bengali_meaning": "নবদীক্ষিত ব্যক্তি",
+    "english_definition": "recent convert; beginner"
+  },
+  {
+    "word": "Obdurate",
+    "bengali_meaning": "একগুঁয়ে",
+    "english_definition": "stubborn"
+  },
+  {
+    "word": "Obsequious",
+    "bengali_meaning": "চাটুকার",
+    "english_definition": "lavishly attentive; servile; sycophantic"
+  },
+  {
+    "word": "Obviate",
+    "bengali_meaning": "দূর করা",
+    "english_definition": "make unnecessary; get rid of"
+  },
+  {
+    "word": "Occlude",
+    "bengali_meaning": "বন্ধ করে দেওয়া",
+    "english_definition": "shut; close"
+  },
+  {
+    "word": "Officious",
+    "bengali_meaning": "অনধিকার",
+    "english_definition": "meddlesome; excessively pushy in offering one's services"
+  },
+  {
+    "word": "Onerous",
+    "bengali_meaning": "গুরুভার",
+    "english_definition": "burdensome"
+  },
+  {
+    "word": "Opprobrium",
+    "bengali_meaning": "নিন্দা",
+    "english_definition": "infamy; vilification"
+  },
+  {
+    "word": "Oscillate",
+    "bengali_meaning": "স্পন্দিত হওয়া, দোদুল্যমান হওয়া",
+    "english_definition": "vibrate; waver"
+  },
+  {
+    "word": "Ostentatious",
+    "bengali_meaning": "জাঁকালো",
+    "english_definition": "showy; pretentious; trying to attract attention"
+  },
+  {
+    "word": "Paragon",
+    "bengali_meaning": "সম্পূর্ণতার আদর্শ",
+    "english_definition": "model of perfection"
+  },
+  {
+    "word": "Partisan",
+    "bengali_meaning": "দলীয়",
+    "english_definition": "one-sided; prejudiced; committed to a party"
+  },
+  {
+    "word": "Pathological",
+    "bengali_meaning": "আবেগপূর্ণ",
+    "english_definition": "pertaining to disease"
+  },
+  {
+    "word": "Paucity",
+    "bengali_meaning": "অভাব, ঘাটতি",
+    "english_definition": "Scarcity"
+  },
+  {
+    "word": "Pedantic",
+    "bengali_meaning": "গোঁড়া, স্কুল-শিক্ষকসুলভ",
+    "english_definition": "showing off learning; bookish"
+  },
+  {
+    "word": "Penchant",
+    "bengali_meaning": "পছন্দ",
+    "english_definition": "strong inclination; liking"
+  },
+  {
+    "word": "Penury",
+    "bengali_meaning": "স্বল্পতা",
+    "english_definition": "severe poverty; stinginess"
+  },
+  {
+    "word": "Perennial",
+    "bengali_meaning": "বহুবর্ষজীবী",
+    "english_definition": "something long-lasting"
+  },
+  {
+    "word": "Perfidious",
+    "bengali_meaning": "অবিশ্বাসী",
+    "english_definition": "treacherous; disloyal"
+  },
+  {
+    "word": "Perfunctory",
+    "bengali_meaning": "দ্রুতসম্পাদিত, অগভীর",
+    "english_definition": "superficial; not thorough; lacking interest, care, or enthusiasm"
+  },
+  {
+    "word": "Permeable",
+    "bengali_meaning": "ভেদ্য",
+    "english_definition": "penetrable; porous; allowing liquids or gas to pass through"
+  },
+  {
+    "word": "Pervasive",
+    "bengali_meaning": "পরিব্যাপক",
+    "english_definition": "spread throughout"
+  },
+  {
+    "word": "Phlegmatic",
+    "bengali_meaning": "জড",
+    "english_definition": "calm; not easily disturbed"
+  },
+  {
+    "word": "Piety",
+    "bengali_meaning": "ভক্তি",
+    "english_definition": "devoutness; reverence for God"
+  },
+  {
+    "word": "Placate",
+    "bengali_meaning": "শান্ত করা",
+    "english_definition": "pacify; conciliate"
+  },
+  {
+    "word": "Plasticity",
+    "bengali_meaning": "নমনীয়তা",
+    "english_definition": "ability to be molded"
+  },
+  {
+    "word": "Platitude",
+    "bengali_meaning": "মামুলি মন্তব্য",
+    "english_definition": "trite remark; commonplace statement"
+  },
+  {
+    "word": "Plethora",
+    "bengali_meaning": "আধিক্য",
+    "english_definition": "excess; overabundance"
+  },
+  {
+    "word": "Plummet",
+    "bengali_meaning": "ওলনদড়ি",
+    "english_definition": "fall sharply"
+  },
+  {
+    "word": "Porous",
+    "bengali_meaning": "ঝাঁজরা",
+    "english_definition": "full of pores; like a sieve"
+  },
+  {
+    "word": "Pragmatic",
+    "bengali_meaning": "রাষ্ট্রীয়",
+    "english_definition": "practical (as opposed to idealistic); concerned with the practical worth or impact of something"
+  },
+  {
+    "word": "Preamble",
+    "bengali_meaning": "প্রস্তাবনা",
+    "english_definition": "introductory statement"
+  },
+  {
+    "word": "Precarious",
+    "bengali_meaning": "নিরাপত্তাহীন",
+    "english_definition": "uncertain; risky"
+  },
+  {
+    "word": "Precipitate",
+    "bengali_meaning": "থিতান",
+    "english_definition": "rash, premature, hasty, sudden"
+  },
+  {
+    "word": "Precursor",
+    "bengali_meaning": "অগ্রদূত, ঘটনার পূর্বাভাস",
+    "english_definition": "forerunner"
+  },
+  {
+    "word": "Presumptuous",
+    "bengali_meaning": "অহংকারী",
+    "english_definition": "arrogant; taking liberties"
+  },
+  {
+    "word": "Prevaricate",
+    "bengali_meaning": "সত্যের অপলাপ করা",
+    "english_definition": "lie"
+  },
+  {
+    "word": "Pristine",
+    "bengali_meaning": "আদিম",
+    "english_definition": "characteristic of earlier times; primitive; unspoiled"
+  },
+  {
+    "word": "Probity",
+    "bengali_meaning": "সততা, ন্যায়পরতা",
+    "english_definition": "uprightness; incorruptibility"
+  },
+  {
+    "word": "Problematic",
+    "bengali_meaning": "সমস্যাযুক",
+    "english_definition": "doubtful; unsettled; questionable; perplexing"
+  },
+  {
+    "word": "Prodigal",
+    "bengali_meaning": "অপব্যযী",
+    "english_definition": "wasteful; reckless with money"
+  },
+  {
+    "word": "Profound",
+    "bengali_meaning": "গভীর",
+    "english_definition": "deep; not superficial; complete"
+  },
+  {
+    "word": "Prohibitive",
+    "bengali_meaning": "প্রতিষেধক",
+    "english_definition": "tending to prevent the purchase or use of something; inclined to prevent or forbid"
+  },
+  {
+    "word": "Proliferate",
+    "bengali_meaning": "প্রচুর সংখ্যায় স্বীয় বংশবৃদ্ধি করা",
+    "english_definition": "grow rapidly; spread; multiply"
+  },
+  {
+    "word": "Propensity",
+    "bengali_meaning": "প্রবণতা",
+    "english_definition": "natural inclination"
+  },
+  {
+    "word": "Propitiate",
+    "bengali_meaning": "শান্ত করা",
+    "english_definition": "Appease"
+  },
+  {
+    "word": "Propriety",
+    "bengali_meaning": "সম্পত্তি",
+    "english_definition": "fitness; correct conduct"
+  },
+  {
+    "word": "Proscribe",
+    "bengali_meaning": "নির্বাসিত করা",
+    "english_definition": "ostracize; banish; outlaw"
+  },
+  {
+    "word": "Pungent",
+    "bengali_meaning": "তীব্র কটু, কুটগন্ধ",
+    "english_definition": "stinging; sharp in taste or smell; caustic"
+  },
+  {
+    "word": "Qualified",
+    "bengali_meaning": "উপযুক্ত",
+    "english_definition": "limited; restricted"
+  },
+  {
+    "word": "Quibble",
+    "bengali_meaning": "টাল",
+    "english_definition": "minor objection or complaint"
+  },
+  {
+    "word": "Quiescent",
+    "bengali_meaning": "নিশ্চল",
+    "english_definition": "at rest; dormant; temporarily inactive"
+  },
+  {
+    "word": "Rarefied",
+    "bengali_meaning": "তনু",
+    "english_definition": "made less dense (of a gas)"
+  },
+  {
+    "word": "Recalcitrant",
+    "bengali_meaning": "বিরুপ",
+    "english_definition": "obstinately stubborn; determined to resist authority; unruly"
+  },
+  {
+    "word": "Recant",
+    "bengali_meaning": "প্রত্যাহার করা",
+    "english_definition": "disclaim or disavow; retract a previous statement; openly confess error"
+  },
+  {
+    "word": "Recluse",
+    "bengali_meaning": "নি:সঙ্গ",
+    "english_definition": "hermit; loner"
+  },
+  {
+    "word": "Recondite",
+    "bengali_meaning": "দুর্বোধ্য",
+    "english_definition": "abstruse; profound; secret"
+  },
+  {
+    "word": "Refractory",
+    "bengali_meaning": "অবাধ্য",
+    "english_definition": "stubborn; unmanageable"
+  },
+  {
+    "word": "Refute",
+    "bengali_meaning": "খণ্ডন",
+    "english_definition": "Disprove"
+  },
+  {
+    "word": "Relegate",
+    "bengali_meaning": "নির্বাসিত করা",
+    "english_definition": "banish to an inferior position; delegate; assign"
+  },
+  {
+    "word": "Reproach",
+    "bengali_meaning": "কলঙ্",
+    "english_definition": "express disapproval or disappointment"
+  },
+  {
+    "word": "Reprobate",
+    "bengali_meaning": "হীন ব্যকি",
+    "english_definition": "person hardened in sin; devoid of a sense of decency"
+  },
+  {
+    "word": "Repudiate",
+    "bengali_meaning": "পরিত্যাগ করা",
+    "english_definition": "disown; disavow"
+  },
+  {
+    "word": "Rescind",
+    "bengali_meaning": "বাতিল করা",
+    "english_definition": "Cancel"
+  },
+  {
+    "word": "Resolution",
+    "bengali_meaning": "সমাধান",
+    "english_definition": "Determination"
+  },
+  {
+    "word": "Resolve",
+    "bengali_meaning": "সমাধান করুন",
+    "english_definition": "determination; firmness of purpose"
+  },
+  {
+    "word": "Reticent",
+    "bengali_meaning": "স্বল্পভাষী",
+    "english_definition": "reserved; uncommunicative; inclined to silence"
+  },
+  {
+    "word": "Reverent",
+    "bengali_meaning": "ভক্তিপূর্ণ",
+    "english_definition": "respectful; worshipful"
+  },
+  {
+    "word": "Sage",
+    "bengali_meaning": "ঋষি, মহাজ্ঞানী",
+    "english_definition": "person celebrated for wisdom"
+  },
+  {
+    "word": "Salubrious",
+    "bengali_meaning": "স্বাস্থ্যকর",
+    "english_definition": "Healthful"
+  },
+  {
+    "word": "Sanction",
+    "bengali_meaning": "অনুমোদন",
+    "english_definition": "approve; ratify"
+  },
+  {
+    "word": "Satiate",
+    "bengali_meaning": "সম্পূর্ণ পরিতৃপ্ত করা",
+    "english_definition": "satisfy fully"
+  },
+  {
+    "word": "Saturate",
+    "bengali_meaning": "পরিপূর্ণ করা",
+    "english_definition": "soak thoroughly"
+  },
+  {
+    "word": "Savor",
+    "bengali_meaning": "গন্ধ",
+    "english_definition": "enjoy; have a distinctive flavor, smell, or quality"
+  },
+  {
+    "word": "Secrete",
+    "bengali_meaning": "লুকাইয়া রাখা",
+    "english_definition": "hide away or cache; produce and release a substance into an organism"
+  },
+  {
+    "word": "Shard",
+    "bengali_meaning": "খোলা",
+    "english_definition": "fragment, generally of pottery"
+  },
+  {
+    "word": "Skeptic",
+    "bengali_meaning": "সংশযী",
+    "english_definition": "doubter; person who suspends judgment until having examined evidence supporting a point of view"
+  },
+  {
+    "word": "Solicitous",
+    "bengali_meaning": "উজ্জ্বষ্ঠিত",
+    "english_definition": "worried; concerned"
+  },
+  {
+    "word": "Soporific",
+    "bengali_meaning": "নিদ্রাজনক, নিদ্রাকর্ষক",
+    "english_definition": "sleep-causing; marked by sleepiness"
+  },
+  {
+    "word": "Specious",
+    "bengali_meaning": "ভালো",
+    "english_definition": "seemingly reasonable but incorrect; misleading (often intentionally)"
+  },
+  {
+    "word": "Spectrum",
+    "bengali_meaning": "বর্ণালী",
+    "english_definition": "colored band produced when a beam of light passes through a prism"
+  },
+  {
+    "word": "Sporadic",
+    "bengali_meaning": "বিক্ষিপ্ত",
+    "english_definition": "occurring irregularly"
+  },
+  {
+    "word": "Stigma",
+    "bengali_meaning": "কলঙ্ক, কালি",
+    "english_definition": "token of disgrace; brand"
+  },
+  {
+    "word": "Stint",
+    "bengali_meaning": "সীমা",
+    "english_definition": "be thrifty; set limits"
+  },
+  {
+    "word": "Stipulate",
+    "bengali_meaning": "চুক্তির শর্ত করা",
+    "english_definition": "make express conditions; specify"
+  },
+  {
+    "word": "Stolid",
+    "bengali_meaning": "অবিচলিত, ভাবলেশহীন",
+    "english_definition": "dull; impassive"
+  },
+  {
+    "word": "Striated",
+    "bengali_meaning": "বিলেখিত",
+    "english_definition": "marked with parallel bands; grooved"
+  },
+  {
+    "word": "Strut",
+    "bengali_meaning": "বৃথা গর্বে বা আত্মগরিমায় গটগট করিয়া",
+    "english_definition": "pompous walk"
+  },
+  {
+    "word": "Strut",
+    "bengali_meaning": "ভাররক্ষা করা",
+    "english_definition": "supporting bar"
+  },
+  {
+    "word": "Subpoena",
+    "bengali_meaning": "",
+    "english_definition": "writ summoning a witness to appear"
+  },
+  {
+    "word": "Subside",
+    "bengali_meaning": "হ্রাস পাওয়া",
+    "english_definition": "settle down; descend; grow quiet"
+  },
+  {
+    "word": "Substantiate",
+    "bengali_meaning": "বাস্তবায়িত করা",
+    "english_definition": "establish by evidence; verify; support"
+  },
+  {
+    "word": "Supersede",
+    "bengali_meaning": "সরাইয়া রাখা",
+    "english_definition": "cause to be set aside; replace; make obsolete"
+  },
+  {
+    "word": "Supposition",
+    "bengali_meaning": "অনুমান",
+    "english_definition": "hypothesis; surmise"
+  },
+  {
+    "word": "Tacit",
+    "bengali_meaning": "অকথিত, মৌন",
+    "english_definition": "understood; not put into words"
+  },
+  {
+    "word": "Tangential",
+    "bengali_meaning": "স্পর্শকতুল্য",
+    "english_definition": "peripheral; only slightly connected; digressing"
+  },
+  {
+    "word": "Tenuous",
+    "bengali_meaning": "অতি সূক্ষ্ম",
+    "english_definition": "thin; rare; slim"
+  },
+  {
+    "word": "Tirade",
+    "bengali_meaning": "সুদীর্ঘ বক্তৃতা",
+    "english_definition": "extended scolding; denunciation; harangue"
+  },
+  {
+    "word": "Torpor",
+    "bengali_meaning": "অস্পষ্টতা",
+    "english_definition": "lethargy; sluggishness; dormancy"
+  },
+  {
+    "word": "Tortuous",
+    "bengali_meaning": "কুটিল",
+    "english_definition": "winding; full of curves"
+  },
+  {
+    "word": "Tractable",
+    "bengali_meaning": "সহজে টানা যায় এমন",
+    "english_definition": "docile; easily managed"
+  },
+  {
+    "word": "Transgression",
+    "bengali_meaning": "পাপ",
+    "english_definition": "violation of a law; sin"
+  },
+  {
+    "word": "Truculence",
+    "bengali_meaning": "নিষ্ঠুরতা",
+    "english_definition": "aggressiveness; ferocity"
+  },
+  {
+    "word": "Vacillate",
+    "bengali_meaning": "আন্দোলিত হওয়া, দোলায়মান হওয়া",
+    "english_definition": "waver; fluctuate"
+  },
+  {
+    "word": "Venerate",
+    "bengali_meaning": "শ্রদ্ধা করা",
+    "english_definition": "revere"
+  },
+  {
+    "word": "Veracious",
+    "bengali_meaning": "সত্যবাদী, সত্যনিষ্ঠ",
+    "english_definition": "truthful"
+  },
+  {
+    "word": "Verbose",
+    "bengali_meaning": "শব্দবহুল, শব্দভারাক্রান্ত",
+    "english_definition": "wordy"
+  },
+  {
+    "word": "Viable",
+    "bengali_meaning": "টেকসই",
+    "english_definition": "practical or workable"
+  },
+  {
+    "word": "Viscous",
+    "bengali_meaning": "আঠালো চচ্চটে",
+    "english_definition": "sticky, gluey"
+  },
+  {
+    "word": "Vituperative",
+    "bengali_meaning": "গালাগালিপূর্ণ, নিন্দাপূর্ণ",
+    "english_definition": "abusive; scolding"
+  },
+  {
+    "word": "Volatile",
+    "bengali_meaning": "পরিবর্তনশীল",
+    "english_definition": "changeable; explosive; evaporation rapidly"
+  },
+  {
+    "word": "Warranted",
+    "bengali_meaning": "নিশ্চয় করিয়া বলা",
+    "english_definition": "justified; authorized"
+  },
+  {
+    "word": "Wary",
+    "bengali_meaning": "সতর্ক, সাবধান",
+    "english_definition": "very cautious"
+  },
+  {
+    "word": "Welter",
+    "bengali_meaning": "অশান্তি, টালমাটাল",
+    "english_definition": "turmoil; bewildering jumble"
+  },
+  {
+    "word": "Whimsical",
+    "bengali_meaning": "কিম্ভুতকিমাকার, খামখেয়ালী",
+    "english_definition": "capricious; fanciful"
+  },
+  {
+    "word": "Zealot",
+    "bengali_meaning": "অতি গোঁড়া লোক, ধর্মান্ধ",
+    "english_definition": "fanatic; person who shows excessive zeal"
+  }
+]
