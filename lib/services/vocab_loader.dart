@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import '../models/vocabulary.dart';
+import '../utils/error_handler.dart';
 
 /// Service class for loading vocabulary data from local JSON assets
 class VocabLoader {
@@ -8,7 +9,7 @@ class VocabLoader {
   static bool _isLoaded = false;
 
   /// Load vocabulary data from assets/vocab.json
-  /// Returns a list of Vocabulary objects
+  /// Returns a list of Vocabulary objects with enhanced error handling
   static Future<List<Vocabulary>> loadVocabulary() async {
     if (_isLoaded && _vocabularyList != null) {
       return _vocabularyList!;
@@ -21,19 +22,40 @@ class VocabLoader {
       // Parse JSON data
       final List<dynamic> jsonList = json.decode(jsonString);
       
-      // Convert to Vocabulary objects
-      _vocabularyList = jsonList
-          .map((json) => Vocabulary.fromJson(json as Map<String, dynamic>))
-          .toList();
+      // Validate JSON structure
+      if (jsonList.isEmpty) {
+        throw Exception('Vocabulary data is empty');
+      }
+      
+      // Convert to Vocabulary objects with validation
+      _vocabularyList = jsonList.map((json) {
+        try {
+          return Vocabulary.fromJson(json as Map<String, dynamic>);
+        } catch (e) {
+          throw Exception('Invalid vocabulary item format: $e');
+        }
+      }).toList();
+      
+      // Validate loaded data - filter out invalid entries instead of throwing
+      _vocabularyList = _vocabularyList!.where((vocab) {
+        return vocab.word.isNotEmpty && 
+               vocab.bengaliMeaning.isNotEmpty && 
+               vocab.englishDefinition.isNotEmpty;
+      }).toList();
+      
+      if (_vocabularyList!.isEmpty) {
+        throw Exception('No valid vocabulary data found');
+      }
       
       _isLoaded = true;
       return _vocabularyList!;
     } catch (e) {
-      // If loading fails, return empty list
-      print('Error loading vocabulary: $e');
-      _vocabularyList = [];
-      _isLoaded = true;
-      return _vocabularyList!;
+      if (e is FormatException) {
+        throw Exception('Invalid JSON format in vocabulary file');
+      } else if (e is PlatformException) {
+        throw Exception('Failed to read vocabulary file from assets');
+      }
+      rethrow;
     }
   }
 
@@ -91,5 +113,41 @@ class VocabLoader {
   static void clearCache() {
     _vocabularyList = null;
     _isLoaded = false;
+  }
+
+  /// Validate vocabulary data integrity
+  static Future<bool> validateVocabularyData() async {
+    try {
+      final vocabulary = await loadVocabulary();
+      
+      // Check for required fields
+      for (final item in vocabulary) {
+        if (item.word.isEmpty || 
+            item.bengaliMeaning.isEmpty || 
+            item.englishDefinition.isEmpty) {
+          return false;
+        }
+      }
+      
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Get vocabulary statistics
+  static Future<Map<String, int>> getVocabularyStats() async {
+    try {
+      final vocabulary = await loadVocabulary();
+      return {
+        'totalWords': vocabulary.length,
+        'uniqueWords': vocabulary.map((v) => v.word).toSet().length,
+      };
+    } catch (e) {
+      return {
+        'totalWords': 0,
+        'uniqueWords': 0,
+      };
+    }
   }
 }
