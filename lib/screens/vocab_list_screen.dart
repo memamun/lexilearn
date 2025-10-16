@@ -7,6 +7,7 @@ import '../models/vocabulary.dart';
 import '../services/vocab_loader.dart';
 import '../services/favorites_service.dart';
 import '../services/learning_stats_service.dart';
+import '../utils/app_themes.dart';
 
 /// Vocabulary list screen with search functionality
 class VocabListScreen extends StatefulWidget {
@@ -20,6 +21,7 @@ class _VocabListScreenState extends State<VocabListScreen> {
   List<Vocabulary> _allVocabulary = [];
   List<Vocabulary> _filteredVocabulary = [];
   final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
   bool _isLoading = true;
   String _searchQuery = '';
   String _currentFilter = 'All'; // All, Read, Unread, Favourite
@@ -45,6 +47,7 @@ class _VocabListScreenState extends State<VocabListScreen> {
   @override
   void dispose() {
     _searchController.dispose();
+    _searchFocusNode.dispose();
     _searchTimer?.cancel();
     super.dispose();
   }
@@ -80,12 +83,11 @@ class _VocabListScreenState extends State<VocabListScreen> {
   /// Load studied words from learning stats
   Future<Set<String>> _loadStudiedWords() async {
     try {
-      // Get all studied words (known + unknown)
+      // Only get known words as studied (unknown words are not considered studied)
       final prefs = await SharedPreferences.getInstance();
       final List<String> knownWordsList = prefs.getStringList('known_words') ?? [];
-      final List<String> unknownWordsList = prefs.getStringList('unknown_words') ?? [];
       
-      return {...knownWordsList, ...unknownWordsList}.toSet();
+      return knownWordsList.toSet();
     } catch (e) {
       return <String>{};
     }
@@ -97,7 +99,7 @@ class _VocabListScreenState extends State<VocabListScreen> {
     _searchTimer = Timer(const Duration(milliseconds: 300), () async {
     setState(() {
       _searchQuery = query.toLowerCase();
-      });
+    });
       await _applyFilters();
     });
   }
@@ -136,7 +138,8 @@ class _VocabListScreenState extends State<VocabListScreen> {
         filtered = filtered.where((vocab) => !_studiedWords.contains(vocab.word)).toList();
         break;
       case 'Favourite':
-        // For favorites, we'll filter in the build method using FutureBuilder
+        // Filter to only show favorited words
+        filtered = filtered.where((vocab) => _favoriteStatus[vocab.word] == true).toList();
         break;
       case 'All':
       default:
@@ -165,6 +168,7 @@ class _VocabListScreenState extends State<VocabListScreen> {
       _currentPage = 0;
       _hasMoreItems = filtered.length > _itemsPerPage;
     });
+    
   }
 
   /// Apply sorting to the filtered list
@@ -243,17 +247,22 @@ class _VocabListScreenState extends State<VocabListScreen> {
       await FavoritesService.addToFavorites(vocab);
       _favoriteStatus[vocab.word] = true;
     }
-    setState(() {}); // Refresh UI
+    
+    // If we're currently viewing favorites, refresh the filter
+    if (_currentFilter == 'Favourite') {
+      await _applyFilters();
+    } else {
+      setState(() {}); // Just refresh UI
+    }
   }
 
-  /// Get favorite words
-  Future<List<Vocabulary>> _getFavoriteWords() async {
-    final favorites = await FavoritesService.getFavorites();
-    return favorites;
-  }
 
   /// Set sort and filter with one action
   Future<void> _setSortAndFilter(String sort, String filter) async {
+    // Clear cache when changing filters to ensure fresh results
+    _searchCache.clear();
+    
+    
     setState(() {
       _sortBy = sort;
       _currentFilter = filter;
@@ -266,14 +275,27 @@ class _VocabListScreenState extends State<VocabListScreen> {
     await _loadVocabulary();
   }
 
+  /// Refresh studied words
+  Future<void> _refreshStudiedWords() async {
+    final studiedWords = await _loadStudiedWords();
+    setState(() {
+      _studiedWords = studiedWords;
+    });
+    await _applyFilters();
+  }
+
   /// Toggle selection mode
   void _toggleSelectionMode() {
     HapticFeedback.selectionClick(); // Selection feedback
+    print('Toggling selection mode. Current mode: $_isSelectionMode');
     setState(() {
       _isSelectionMode = !_isSelectionMode;
       if (!_isSelectionMode) {
         _selectedWords.clear();
         _isAllSelected = false;
+        print('Exiting selection mode. Cleared selections.');
+      } else {
+        print('Entering selection mode.');
       }
     });
   }
@@ -281,11 +303,14 @@ class _VocabListScreenState extends State<VocabListScreen> {
   /// Toggle word selection
   void _toggleWordSelection(String word) {
     HapticFeedback.lightImpact(); // Light feedback for selection
+    print('Toggling selection for word: $word');
     setState(() {
       if (_selectedWords.contains(word)) {
         _selectedWords.remove(word);
+        print('Removed from selection. Selected count: ${_selectedWords.length}');
       } else {
         _selectedWords.add(word);
+        print('Added to selection. Selected count: ${_selectedWords.length}');
       }
       // Update select all state
       _updateSelectAllState();
@@ -401,8 +426,8 @@ class _VocabListScreenState extends State<VocabListScreen> {
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: onPressed != null 
-              ? Colors.white.withOpacity(0.2) 
-              : Colors.white.withOpacity(0.1),
+              ? AppThemes.getPrimaryColor(context).withOpacity(0.2) 
+              : AppThemes.getPrimaryColor(context).withOpacity(0.1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Icon(
@@ -427,8 +452,8 @@ class _VocabListScreenState extends State<VocabListScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
           color: onPressed != null 
-              ? Colors.white.withOpacity(0.2) 
-              : Colors.white.withOpacity(0.1),
+              ? AppThemes.getPrimaryColor(context).withOpacity(0.2) 
+              : AppThemes.getPrimaryColor(context).withOpacity(0.1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
@@ -441,7 +466,7 @@ class _VocabListScreenState extends State<VocabListScreen> {
             ),
             const SizedBox(width: 4),
             Text(
-              label,
+        label,
               style: GoogleFonts.lexend(
                 fontSize: 11,
                 fontWeight: FontWeight.w600,
@@ -461,25 +486,40 @@ class _VocabListScreenState extends State<VocabListScreen> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
         decoration: BoxDecoration(
-          color: isActive ? const Color(0xFF1132D4) : const Color(0xFFF5F5F5),
-          borderRadius: BorderRadius.circular(12),
+          color: isActive ? AppThemes.getPrimaryColor(context) : AppThemes.getCardColor(context),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: isActive ? const Color(0xFF1132D4) : const Color(0xFFE0E0E0),
+            color: isActive ? AppThemes.getPrimaryColor(context) : AppThemes.getBorderColor(context),
+            width: 1.5,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: isActive 
+                  ? AppThemes.getPrimaryColor(context).withOpacity(0.3)
+                  : Colors.transparent,
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 16, color: isActive ? Colors.white : const Color(0xFF2C3E50)),
-            const SizedBox(width: 4),
+            Icon(
+              icon, 
+              size: 18, 
+              color: isActive ? Colors.white : AppThemes.getTextColor(context),
+            ),
+            const SizedBox(width: 6),
             Text(
-        label,
+              label,
               style: GoogleFonts.lexend(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: isActive ? Colors.white : const Color(0xFF2C3E50),
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: isActive ? Colors.white : AppThemes.getTextColor(context),
+                letterSpacing: 0.2,
               ),
             ),
           ],
@@ -493,7 +533,7 @@ class _VocabListScreenState extends State<VocabListScreen> {
   void _showSortFilterMenu(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFFF6F6F8),
+      backgroundColor: AppThemes.getCardColor(context),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -512,7 +552,7 @@ class _VocabListScreenState extends State<VocabListScreen> {
                       width: 40,
                       height: 4,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF2C3E50).withOpacity(0.3),
+                        color: AppThemes.getSecondaryTextColor(context).withOpacity(0.3),
                         borderRadius: BorderRadius.circular(2),
                       ),
                     ),
@@ -524,8 +564,9 @@ class _VocabListScreenState extends State<VocabListScreen> {
                     'Sort & Filter',
                     style: GoogleFonts.lexend(
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF2C3E50),
+                      fontWeight: FontWeight.w700,
+                      color: AppThemes.getTextColor(context),
+                      letterSpacing: 0.2,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -536,7 +577,8 @@ class _VocabListScreenState extends State<VocabListScreen> {
                     style: GoogleFonts.lexend(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xFF2C3E50),
+                      color: AppThemes.getTextColor(context),
+                      letterSpacing: 0.1,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -556,23 +598,33 @@ class _VocabListScreenState extends State<VocabListScreen> {
                           Navigator.pop(context);
                         },
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                           decoration: BoxDecoration(
-                            color: isSelected ? const Color(0xFF1132D4) : const Color(0xFFF5F5F5),
+                            color: isSelected ? AppThemes.getPrimaryColor(context) : AppThemes.getCardColor(context),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: isSelected ? const Color(0xFF1132D4) : const Color(0xFFE0E0E0),
-                              width: 1,
+                              color: isSelected ? AppThemes.getPrimaryColor(context) : AppThemes.getBorderColor(context),
+                              width: 1.5,
                             ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: isSelected 
+                                    ? AppThemes.getPrimaryColor(context).withOpacity(0.3)
+                                    : Colors.transparent,
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
                           ),
                           child: Text(
                             sortOption,
         style: GoogleFonts.lexend(
           fontSize: 14,
           fontWeight: FontWeight.w500,
-          color: isSelected ? Colors.white : const Color(0xFF2C3E50),
-        ),
-      ),
+                              color: isSelected ? Colors.white : AppThemes.getTextColor(context),
+                              letterSpacing: 0.1,
+                            ),
+                          ),
                         ),
                       );
                     }).toList(),
@@ -586,7 +638,8 @@ class _VocabListScreenState extends State<VocabListScreen> {
                     style: GoogleFonts.lexend(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: const Color(0xFF2C3E50),
+                      color: AppThemes.getTextColor(context),
+                      letterSpacing: 0.1,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -606,21 +659,31 @@ class _VocabListScreenState extends State<VocabListScreen> {
                           Navigator.pop(context);
                         },
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                           decoration: BoxDecoration(
-                            color: isSelected ? const Color(0xFF1132D4) : const Color(0xFFF5F5F5),
+                            color: isSelected ? AppThemes.getPrimaryColor(context) : AppThemes.getCardColor(context),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-        color: isSelected ? const Color(0xFF1132D4) : const Color(0xFFE0E0E0),
-        width: 1,
-      ),
+                              color: isSelected ? AppThemes.getPrimaryColor(context) : AppThemes.getBorderColor(context),
+                              width: 1.5,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: isSelected 
+                                    ? AppThemes.getPrimaryColor(context).withOpacity(0.3)
+                                    : Colors.transparent,
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
                           ),
                           child: Text(
                             filterOption,
                             style: GoogleFonts.lexend(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
-                              color: isSelected ? Colors.white : const Color(0xFF2C3E50),
+                              color: isSelected ? Colors.white : AppThemes.getTextColor(context),
+                              letterSpacing: 0.1,
                             ),
                           ),
                         ),
@@ -641,20 +704,26 @@ class _VocabListScreenState extends State<VocabListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F8),
+      backgroundColor: AppThemes.getBackgroundColor(context),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF6F6F8),
+        backgroundColor: AppThemes.getBackgroundColor(context),
         elevation: 0,
+        surfaceTintColor: Colors.transparent,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF2C3E50)),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: AppThemes.getTextColor(context),
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'Vocabulary List',
           style: GoogleFonts.lexend(
             fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF2C3E50),
+            fontWeight: FontWeight.w700,
+            color: AppThemes.getTextColor(context),
+            letterSpacing: 0.2,
+            height: 1.0,
           ),
         ),
         centerTitle: true,
@@ -662,12 +731,15 @@ class _VocabListScreenState extends State<VocabListScreen> {
           IconButton(
             icon: Icon(
               _isSelectionMode ? Icons.close : Icons.checklist,
-              color: const Color(0xFF2C3E50),
+              color: AppThemes.getTextColor(context),
             ),
             onPressed: _toggleSelectionMode,
           ),
           IconButton(
-            icon: const Icon(Icons.sort, color: Color(0xFF2C3E50)),
+            icon: Icon(
+              Icons.sort,
+              color: AppThemes.getTextColor(context),
+            ),
             onPressed: () => _showSortFilterMenu(context),
           ),
         ],
@@ -675,53 +747,76 @@ class _VocabListScreenState extends State<VocabListScreen> {
       body: Column(
         children: [
           // Search bar
-          Container(
+          Padding(
             padding: const EdgeInsets.all(16),
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFFF5F5F5),
-                borderRadius: BorderRadius.circular(25),
-                border: Border.all(
-                  color: const Color(0xFFE0E0E0),
-                  width: 1,
-                ),
-              ),
               child: TextField(
                 controller: _searchController,
+              focusNode: _searchFocusNode,
                 onChanged: _filterVocabulary,
+              style: GoogleFonts.lexend(
+                color: AppThemes.getTextColor(context),
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
                 decoration: InputDecoration(
-                  hintText: 'Search words',
+                hintText: 'Search words...',
                   hintStyle: GoogleFonts.lexend(
-                    color: const Color(0xFF2C3E50).withOpacity(0.5),
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? AppThemes.getTextColor(context).withOpacity(0.7)
+                      : AppThemes.getSecondaryTextColor(context),
                     fontSize: 16,
-                  ),
-                  prefixIcon: const Icon(
-                    Icons.search,
-                    color: Color(0xFF2C3E50),
-                    size: 24,
-                  ),
-                  suffixIcon: _searchQuery.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(
-                            Icons.clear,
-                            color: Color(0xFF2C3E50),
-                            size: 20,
-                          ),
-                          onPressed: () {
-                            _searchController.clear();
-                            _filterVocabulary('');
-                          },
-                        )
-                      : null,
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 16,
+                  fontWeight: FontWeight.w400,
+                ),
+                prefixIcon: Icon(
+                  Icons.search_rounded,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? AppThemes.getSecondaryTextColor(context)
+                      : AppThemes.getSecondaryTextColor(context),
+                  size: 22,
+                ),
+                suffixIcon: _searchQuery.isNotEmpty
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.clear_rounded,
+                          color: AppThemes.getSecondaryTextColor(context),
+                          size: 20,
+                        ),
+                        onPressed: () {
+                          _searchController.clear();
+                          _filterVocabulary('');
+                        },
+                      )
+                    : null,
+                filled: true,
+                fillColor: AppThemes.getCardColor(context),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? AppThemes.getBorderColor(context).withOpacity(0.2)
+                        : AppThemes.getBorderColor(context).withOpacity(0.5),
+                    width: 1,
                   ),
                 ),
-                style: GoogleFonts.lexend(
-                  fontSize: 16,
-                  color: const Color(0xFF2C3E50),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? AppThemes.getBorderColor(context).withOpacity(0.2)
+                        : AppThemes.getBorderColor(context).withOpacity(0.5),
+                    width: 1,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: BorderSide(
+                    color: AppThemes.getPrimaryColor(context).withOpacity(0.5),
+                    width: 1.5,
+                  ),
+                ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                  vertical: 18,
                 ),
               ),
             ),
@@ -733,11 +828,11 @@ class _VocabListScreenState extends State<VocabListScreen> {
               margin: const EdgeInsets.fromLTRB(16, 8, 16, 12),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               decoration: BoxDecoration(
-                color: const Color(0xFF1132D4),
+                color: AppThemes.getPrimaryColor(context),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF1132D4).withOpacity(0.3),
+                    color: AppThemes.getPrimaryColor(context).withOpacity(0.3),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
@@ -771,7 +866,7 @@ class _VocabListScreenState extends State<VocabListScreen> {
                     ),
                     child: Text(
                       '${_selectedWords.length} selected',
-                      style: GoogleFonts.lexend(
+                style: GoogleFonts.lexend(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
@@ -789,7 +884,7 @@ class _VocabListScreenState extends State<VocabListScreen> {
                   _buildSelectionIconButton(
                     icon: Icons.check_circle,
                     onPressed: _selectedWords.isNotEmpty ? _markSelectedAsStudied : null,
-                    color: Colors.green,
+                    color: AppThemes.getPrimaryColor(context),
                   ),
                   const SizedBox(width: 8),
                   _buildSelectionIconButton(
@@ -864,33 +959,14 @@ class _VocabListScreenState extends State<VocabListScreen> {
           // Vocabulary list
           Expanded(
             child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
+                ? Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(AppThemes.getPrimaryColor(context)),
+                    ),
+                  )
                 : _filteredVocabulary.isEmpty
                     ? _buildEmptyState()
-                    : _currentFilter == 'Favourite'
-                        ? FutureBuilder<List<Vocabulary>>(
-                            future: _getFavoriteWords(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return const Center(child: CircularProgressIndicator());
-                              }
-                              final favoriteWords = snapshot.data ?? [];
-                              return favoriteWords.isEmpty
-                                  ? _buildEmptyState()
-                                  : RefreshIndicator(
-                                      onRefresh: _refreshData,
-                                      child: ListView.builder(
-                                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                                      itemCount: favoriteWords.length,
-                                      itemBuilder: (context, index) {
-                                        final vocab = favoriteWords[index];
-                                        return _buildVocabularyCard(vocab);
-                                      },
-                                      ),
-                                    );
-                            },
-                          )
-                        : RefreshIndicator(
+                    : RefreshIndicator(
                             onRefresh: _refreshData,
                             child: ListView.builder(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -902,13 +978,13 @@ class _VocabListScreenState extends State<VocabListScreen> {
                                     padding: const EdgeInsets.all(16),
                                     child: Center(
                                       child: _isLoadingMore
-                                          ? const CircularProgressIndicator(
-                                              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF1132D4)),
+                                          ? CircularProgressIndicator(
+                                              valueColor: AlwaysStoppedAnimation<Color>(AppThemes.getPrimaryColor(context)),
                                             )
                                           : ElevatedButton(
                                               onPressed: _hasMoreItems ? _loadMoreItems : null,
                                               style: ElevatedButton.styleFrom(
-                                                backgroundColor: const Color(0xFF1132D4),
+                                                backgroundColor: AppThemes.getPrimaryColor(context),
                                                 foregroundColor: Colors.white,
                                               ),
                                               child: Text(_hasMoreItems ? 'Load More' : 'No More Items'),
@@ -936,28 +1012,65 @@ class _VocabListScreenState extends State<VocabListScreen> {
     return Semantics(
       label: 'Vocabulary word: ${vocab.word}. Bengali meaning: ${vocab.bengaliMeaning}. English definition: ${vocab.englishDefinition}. ${isStudied ? 'Studied' : 'Not studied'}. ${isFavorite ? 'Favorited' : 'Not favorited'}. ${_isSelectionMode ? (isSelected ? 'Selected' : 'Not selected') : 'Long press to enter selection mode'}',
       button: true,
-        child: GestureDetector(
-        onLongPress: _isSelectionMode ? null : _toggleSelectionMode,
-        onTap: _isSelectionMode 
-            ? () => _toggleWordSelection(vocab.word)
-            : null,
-        child: AnimatedContainer(
+      child: _isSelectionMode 
+          ? GestureDetector(
+              onTap: () => _toggleWordSelection(vocab.word),
+              child: _buildCardContent(vocab, isStudied, isFavorite, isSelected),
+            )
+          : Dismissible(
+              key: Key(vocab.word),
+              direction: DismissDirection.horizontal,
+              background: _buildSwipeBackground(
+                context, 
+                isStudied ? 'Mark as Unread' : 'Mark as Studied', 
+                isStudied ? Icons.undo : Icons.check_circle, 
+                isStudied ? Colors.orange : Colors.green
+              ),
+              secondaryBackground: _buildSwipeBackground(
+                context, 
+                isStudied ? 'Mark as Unread' : 'Mark as Studied', 
+                isStudied ? Icons.undo : Icons.check_circle, 
+                isStudied ? Colors.orange : Colors.green
+              ),
+              confirmDismiss: (direction) async {
+                // Don't actually dismiss, just perform action
+                if (direction == DismissDirection.endToStart || direction == DismissDirection.startToEnd) {
+                  await _handleSwipeAction(vocab, isStudied);
+                }
+                return false; // Don't dismiss the card
+              },
+              child: GestureDetector(
+                onLongPress: _toggleSelectionMode,
+                onTap: _isSelectionMode ? null : () => _markAsStudied(vocab),
+                child: _buildCardContent(vocab, isStudied, isFavorite, isSelected),
+              ),
+            ),
+    );
+  }
+
+  /// Build the card content (moved from main method)
+  Widget _buildCardContent(Vocabulary vocab, bool isStudied, bool isFavorite, bool isSelected) {
+    return AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
             margin: const EdgeInsets.only(bottom: 16),
             decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF1132D4).withOpacity(0.1) : Colors.white,
-            borderRadius: BorderRadius.circular(20), // More rounded
+            color: isSelected 
+                ? AppThemes.getPrimaryColor(context).withOpacity(0.1) 
+                : AppThemes.getCardColor(context),
+            borderRadius: BorderRadius.circular(20),
             border: isSelected
-                ? Border.all(color: const Color(0xFF1132D4), width: 2)
+                ? Border.all(color: AppThemes.getPrimaryColor(context), width: 2)
                 : isStudied 
-                    ? Border.all(color: Colors.green.withOpacity(0.3), width: 2)
+                    ? Border.all(color: AppThemes.getPrimaryColor(context).withOpacity(0.4), width: 2)
                     : null,
               boxShadow: [
                 BoxShadow(
-                color: Colors.black.withOpacity(0.08), // Slightly stronger
-                blurRadius: 12, // Increased
-                offset: const Offset(0, 4), // Increased
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.black.withOpacity(0.4)
+                      : Colors.black.withOpacity(0.12),
+                  blurRadius: 16,
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),
@@ -974,13 +1087,18 @@ class _VocabListScreenState extends State<VocabListScreen> {
                   Row(
                     children: [
                       if (_isSelectionMode) ...[
-                        AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 200),
-                          child: Icon(
-                            isSelected ? Icons.check_circle : Icons.radio_button_unchecked,
-                            key: ValueKey(isSelected),
-                            color: isSelected ? const Color(0xFF1132D4) : const Color(0xFF2C3E50).withOpacity(0.5),
-                            size: 24,
+                        GestureDetector(
+                          onTap: () => _toggleWordSelection(vocab.word),
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 200),
+                            child: Icon(
+                              isSelected ? Icons.check_circle : Icons.radio_button_unchecked,
+                              key: ValueKey(isSelected),
+                              color: isSelected 
+                                  ? AppThemes.getPrimaryColor(context) 
+                                  : AppThemes.getSecondaryTextColor(context),
+                              size: 24,
+                            ),
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -989,32 +1107,56 @@ class _VocabListScreenState extends State<VocabListScreen> {
                         child: Text(
                           vocab.word,
                           style: GoogleFonts.lexend(
-                            fontSize: 24, // Increased from 22
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF1132D4),
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800,
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? const Color(0xFF4A90E2) // Brighter blue for dark mode
+                                : AppThemes.getPrimaryColor(context),
+                            letterSpacing: -0.3,
+                            height: 1.1,
                           ),
                         ),
                       ),
                       if (isStudied) ...[
                         GestureDetector(
-                          onTap: () => _markAsUnread(vocab),
+                          onTap: _isSelectionMode ? null : () => _markAsUnread(vocab),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6), // Increased padding
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           decoration: BoxDecoration(
-                            color: Colors.green,
-                              borderRadius: BorderRadius.circular(16), // More rounded
+                              color: _isSelectionMode 
+                                  ? AppThemes.getPrimaryColor(context).withOpacity(0.3)
+                                  : AppThemes.getPrimaryColor(context),
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: _isSelectionMode 
+                                      ? Colors.transparent
+                                      : AppThemes.getPrimaryColor(context).withOpacity(0.3),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(Icons.check_circle, color: Colors.white, size: 14),
-                                const SizedBox(width: 4),
+                                Icon(
+                                  Icons.check_circle, 
+                                  color: _isSelectionMode 
+                                      ? Colors.white.withOpacity(0.5)
+                                      : Colors.white, 
+                                  size: 18,
+                                ),
+                                const SizedBox(width: 6),
                                 Text(
                             'Studied',
                             style: GoogleFonts.lexend(
-                                    fontSize: 12, // Increased from 10
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w700,
+                              color: _isSelectionMode 
+                                  ? Colors.white.withOpacity(0.5)
+                                  : Colors.white,
+                                    letterSpacing: 0.3,
                                   ),
                                 ),
                               ],
@@ -1023,49 +1165,177 @@ class _VocabListScreenState extends State<VocabListScreen> {
                         ),
                         const SizedBox(width: 8),
                       ],
-                      IconButton(
-                        onPressed: () async {
+                      GestureDetector(
+                        onTap: _isSelectionMode ? null : () async {
                           await _toggleFavorite(vocab);
                         },
-                        icon: Icon(
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: _isSelectionMode 
+                                ? AppThemes.getSecondaryTextColor(context).withOpacity(0.05)
+                                : isFavorite 
+                                    ? Colors.red.withOpacity(0.15)
+                                    : AppThemes.getSecondaryTextColor(context).withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: _isSelectionMode 
+                                    ? Colors.transparent
+                                    : isFavorite 
+                                        ? Colors.red.withOpacity(0.2)
+                                        : Colors.transparent,
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Icon(
                           isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color: isFavorite ? Colors.red : const Color(0xFF2C3E50).withOpacity(0.5),
-                          size: 24,
+                            color: _isSelectionMode 
+                                ? AppThemes.getSecondaryTextColor(context).withOpacity(0.3)
+                                : isFavorite 
+                                    ? Colors.red 
+                                    : AppThemes.getSecondaryTextColor(context),
+                            size: 20,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 
-                  const SizedBox(height: 12), // Increased from 8
+                  const SizedBox(height: 16),
                 
                 // Bengali meaning
                 Text(
                   vocab.bengaliMeaning,
-                  style: GoogleFonts.lexend(
-                      fontSize: 16, // Decreased from 18 for better hierarchy
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xFF2C3E50),
+                  style: GoogleFonts.notoSansBengali(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: AppThemes.getTextColor(context),
+                    letterSpacing: 0.1,
+                    height: 1.3,
                   ),
                 ),
                 
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                 
                 // English definition
                 Text(
                   vocab.englishDefinition,
                   style: GoogleFonts.lexend(
-                      fontSize: 15, // Increased from 14 for better readability
-                      color: const Color(0xFF2C3E50).withOpacity(0.7), // Less muted
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: AppThemes.getSecondaryTextColor(context),
+                    letterSpacing: 0.1,
                     height: 1.4,
                   ),
                 ),
               ],
             ),
           ),
-          ),
         ),
       ),
-    ),
+    );
+  }
+
+  /// Build swipe background (Samsung dialer style)
+  Widget _buildSwipeBackground(BuildContext context, String actionText, IconData icon, Color color) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.4),
+            blurRadius: 20,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              icon,
+              color: Colors.white,
+              size: 24,
+            ),
+          ),
+          const SizedBox(width: 16),
+          Text(
+            actionText,
+            style: GoogleFonts.lexend(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+              letterSpacing: 0.3,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Handle swipe action
+  Future<void> _handleSwipeAction(Vocabulary vocab, bool isStudied) async {
+    HapticFeedback.mediumImpact();
+    
+    if (isStudied) {
+      // If already studied, mark as unread
+      await _markAsUnread(vocab);
+      _showSwipeSnackBar('${vocab.word} marked as unread', Icons.undo, Colors.orange);
+    } else {
+      // If not studied, mark as studied
+      await _markAsStudied(vocab);
+      _showSwipeSnackBar('${vocab.word} marked as studied', Icons.check_circle, Colors.green);
+    }
+  }
+
+  /// Show swipe action feedback
+  void _showSwipeSnackBar(String message, IconData icon, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(icon, color: Colors.white, size: 18),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                message,
+                style: GoogleFonts.lexend(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                  letterSpacing: 0.2,
+                ),
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: color,
+        duration: const Duration(milliseconds: 2000),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        margin: const EdgeInsets.all(16),
+        elevation: 8,
+      ),
     );
   }
 
@@ -1111,47 +1381,54 @@ class _VocabListScreenState extends State<VocabListScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
-              icon,
+            icon,
             size: 64,
-            color: const Color(0xFF2C3E50).withOpacity(0.3),
+            color: AppThemes.getSecondaryTextColor(context).withOpacity(0.3),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           Text(
-              title,
+            title,
             style: GoogleFonts.lexend(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF2C3E50),
-              ),
-              textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 8),
-          Text(
-              subtitle,
-            style: GoogleFonts.lexend(
-              fontSize: 14,
-                color: const Color(0xFF2C3E50).withOpacity(0.7),
-                height: 1.4,
-              ),
-              textAlign: TextAlign.center,
+              fontSize: 22,
+              fontWeight: FontWeight.w700,
+              color: AppThemes.getTextColor(context),
+              letterSpacing: 0.2,
+              height: 1.2,
             ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 12),
+          Text(
+            subtitle,
+            style: GoogleFonts.lexend(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              color: AppThemes.getSecondaryTextColor(context),
+              letterSpacing: 0.1,
+              height: 1.4,
+            ),
+            textAlign: TextAlign.center,
+          ),
             if (onAction != null) ...[
               const SizedBox(height: 24),
             ElevatedButton(
-                onPressed: onAction,
+              onPressed: onAction,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF1132D4),
+                backgroundColor: AppThemes.getPrimaryColor(context),
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 14),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(16),
                 ),
+                elevation: 0,
+                shadowColor: AppThemes.getPrimaryColor(context).withOpacity(0.3),
               ),
               child: Text(
-                  actionText,
+                actionText,
                 style: GoogleFonts.lexend(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
+                  letterSpacing: 0.3,
                 ),
               ),
             ),

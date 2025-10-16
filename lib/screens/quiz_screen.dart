@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/vocabulary.dart';
 import '../services/vocab_loader.dart';
 import '../services/favorites_service.dart';
 import '../services/quiz_state_service.dart';
 import '../services/quiz_settings_service.dart';
+import '../utils/app_themes.dart';
 import 'answer_sheet_screen.dart';
 import 'flashcard_screen.dart';
 
@@ -211,6 +213,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
   /// Select an answer for current question
   void _selectAnswer(String answer) {
+    HapticFeedback.lightImpact(); // Add haptic feedback for selection
     setState(() {
       _userAnswers[_currentQuestionIndex] = answer;
     });
@@ -273,7 +276,7 @@ class _QuizScreenState extends State<QuizScreen> {
                 _submitQuizDirectly();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF1132D4),
+                backgroundColor: AppThemes.getPrimaryColor(context),
                 foregroundColor: Colors.white,
               ),
               child: Text(
@@ -408,39 +411,132 @@ class _QuizScreenState extends State<QuizScreen> {
         }
       },
       child: Scaffold(
-      backgroundColor: const Color(0xFFF6F6F8),
+      backgroundColor: AppThemes.getBackgroundColor(context),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF6F6F8),
+        backgroundColor: AppThemes.getBackgroundColor(context),
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF2C3E50)),
-          onPressed: _showLeaveWarning,
-        ),
-        title: Text(
-          'Quiz',
-          style: GoogleFonts.lexend(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF2C3E50),
-          ),
-        ),
-        centerTitle: true,
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _vocabularyList.isEmpty
-              ? Center(
-                  child: Text(
-                    'No vocabulary found',
+        surfaceTintColor: Colors.transparent,
+        centerTitle: false,
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: AppThemes.getTextColor(context),
+                size: 20,
+              ),
+              onPressed: _showLeaveWarning,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Quiz',
                     style: GoogleFonts.lexend(
-                      fontSize: 18,
-                      color: const Color(0xFF2C3E50),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: AppThemes.getTextColor(context),
+                      letterSpacing: 0.2,
+                      height: 1.0,
                     ),
                   ),
-                )
-              : _showResults
-                  ? _buildResultsScreen()
-                  : _buildQuizScreen(),
+                  Text(
+                    'Test your vocabulary knowledge',
+                    style: GoogleFonts.lexend(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: AppThemes.getSecondaryTextColor(context),
+                      letterSpacing: 0.1,
+                      height: 1.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          if (!_showResults)
+            IconButton(
+              icon: Icon(
+                Icons.refresh_outlined,
+                color: AppThemes.getTextColor(context),
+                size: 22,
+              ),
+              onPressed: () {
+                _restartQuiz();
+              },
+            ),
+        ],
+      ),
+      body: SafeArea(
+        child: _isLoading
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(AppThemes.getPrimaryColor(context)),
+                      strokeWidth: 3,
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Preparing your quiz...',
+                      style: GoogleFonts.lexend(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: AppThemes.getSecondaryTextColor(context),
+                        letterSpacing: 0.1,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : _vocabularyList.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.book_outlined,
+                          size: 64,
+                          color: AppThemes.getSecondaryTextColor(context).withOpacity(0.3),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          'No vocabulary found',
+                          style: GoogleFonts.lexend(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w700,
+                            color: AppThemes.getTextColor(context),
+                            letterSpacing: 0.2,
+                            height: 1.2,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Please try refreshing the app',
+                          style: GoogleFonts.lexend(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            color: AppThemes.getSecondaryTextColor(context),
+                            letterSpacing: 0.1,
+                            height: 1.4,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : _showResults
+                    ? _buildResultsScreen()
+                    : _buildQuizScreen(),
+      ),
       ),
     );
   }
@@ -454,198 +550,313 @@ class _QuizScreenState extends State<QuizScreen> {
     final progress = (_currentQuestionIndex + 1) / _totalQuestions;
     final answerOptions = _answerOptions;
 
-    return Column(
-      children: [
-        // Progress indicator
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Text(
-                'Question ${_currentQuestionIndex + 1} of $_totalQuestions',
-                style: GoogleFonts.lexend(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xFF2C3E50).withOpacity(0.7),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Progress indicator
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: AppThemes.getCardColor(context),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.black.withOpacity(0.3)
+                      : Colors.black.withOpacity(0.05),
+                  blurRadius: 16,
+                  offset: const Offset(0, 4),
                 ),
-              ),
-              const SizedBox(height: 8),
-              LinearProgressIndicator(
-                value: progress,
-                backgroundColor: const Color(0xFFE0E0F8),
-                valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF1132D4)),
-                minHeight: 8,
-              ),
-            ],
-          ),
-        ),
-
-        // Question
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
+              ],
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Question text
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(24),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Text(
-                    'What is the Bengali meaning of "${_currentQuestion!.word}"?',
-                    style: GoogleFonts.lexend(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF2C3E50),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                // Answer options
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: answerOptions.length,
-                    itemBuilder: (context, index) {
-                      final option = answerOptions[index];
-                      final isSelected = _userAnswers[_currentQuestionIndex] == option;
-
-                      Color? backgroundColor;
-                      Color? borderColor;
-                      Color? textColor;
-
-                      backgroundColor = isSelected 
-                          ? const Color(0xFFE0E0F8) 
-                          : Colors.white;
-                      borderColor = isSelected 
-                          ? const Color(0xFF1132D4) 
-                          : const Color(0xFFE0E0E0);
-                      textColor = const Color(0xFF2C3E50);
-
-                      return Container(
-                        margin: const EdgeInsets.only(bottom: 12),
-                        child: Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () => _selectAnswer(option),
-                            borderRadius: BorderRadius.circular(12),
-                            child: Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: backgroundColor,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: borderColor, width: 2),
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 20,
-                                    height: 20,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(color: borderColor, width: 2),
-                                      color: isSelected ? borderColor : Colors.transparent,
-                                    ),
-                                    child: isSelected
-                                        ? const Icon(
-                                            Icons.check,
-                                            size: 12,
-                                            color: Colors.white,
-                                          )
-                                        : null,
-                                  ),
-                                  const SizedBox(width: 16),
-                                  Expanded(
-                                    child: Text(
-                                      option,
-                                      style: GoogleFonts.lexend(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: textColor,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-
-                // Navigation buttons
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Previous button
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: _currentQuestionIndex > 0 ? _previousQuestion : null,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: _currentQuestionIndex > 0 
-                              ? const Color(0xFF6C757D) 
-                              : Colors.grey[300],
-                          foregroundColor: Colors.white,
-                          elevation: 0,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Text(
-                          'Previous',
-                          style: GoogleFonts.lexend(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                    Text(
+                      'Question ${_currentQuestionIndex + 1} of $_totalQuestions',
+                      style: GoogleFonts.lexend(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppThemes.getTextColor(context),
+                        letterSpacing: 0.1,
                       ),
                     ),
-                    
-                    const SizedBox(width: 16),
-                    
-                    // Next button
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: _nextQuestion,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1132D4),
-                          foregroundColor: Colors.white,
-                          elevation: 0,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Text(
-                          _currentQuestionIndex < _totalQuestions - 1 ? 'Next' : 'Finish',
-                          style: GoogleFonts.lexend(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                    Text(
+                      '${(progress * 100).round()}%',
+                      style: GoogleFonts.lexend(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : AppThemes.getPrimaryColor(context),
+                        letterSpacing: 0.1,
                       ),
                     ),
                   ],
                 ),
+                const SizedBox(height: 12),
+                LinearProgressIndicator(
+                  value: progress,
+                  backgroundColor: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white.withOpacity(0.2)
+                      : Colors.grey.withOpacity(0.3),
+                  valueColor: AlwaysStoppedAnimation<Color>(AppThemes.getPrimaryColor(context)),
+                  minHeight: 8,
+                  borderRadius: BorderRadius.circular(4),
+                ),
               ],
             ),
           ),
-        ),
-      ],
+          
+          const SizedBox(height: 24),
+
+          // Question
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: AppThemes.getCardColor(context),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.black.withOpacity(0.3)
+                      : Colors.black.withOpacity(0.05),
+                  blurRadius: 16,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'What is the Bengali meaning of:',
+                  style: GoogleFonts.lexend(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: AppThemes.getSecondaryTextColor(context),
+                    letterSpacing: 0.1,
+                    height: 1.4,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  _currentQuestion!.word,
+                  style: GoogleFonts.lexend(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w800,
+                    color: AppThemes.getTextColor(context),
+                    letterSpacing: -0.3,
+                    height: 1.1,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          // Answer options
+          ...answerOptions.map((option) {
+            final isSelected = _userAnswers[_currentQuestionIndex] == option;
+
+            Color? backgroundColor;
+            Color? borderColor;
+            Color? textColor;
+
+            backgroundColor = isSelected 
+                ? AppThemes.getPrimaryColor(context)
+                : AppThemes.getCardColor(context);
+            borderColor = isSelected 
+                ? AppThemes.getPrimaryColor(context)
+                : Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white.withOpacity(0.2)
+                    : AppThemes.getBorderColor(context);
+            textColor = isSelected 
+                ? Colors.white
+                : AppThemes.getTextColor(context);
+
+            return Container(
+              margin: const EdgeInsets.only(bottom: 12),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () => _selectAnswer(option),
+                  borderRadius: BorderRadius.circular(16),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeInOut,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: backgroundColor,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: borderColor, width: 2),
+                      boxShadow: [
+                        if (isSelected) ...[
+                          BoxShadow(
+                            color: AppThemes.getPrimaryColor(context).withOpacity(0.4),
+                            blurRadius: 16,
+                            offset: const Offset(0, 6),
+                          ),
+                          BoxShadow(
+                            color: AppThemes.getPrimaryColor(context).withOpacity(0.2),
+                            blurRadius: 24,
+                            offset: const Offset(0, 12),
+                          ),
+                        ] else ...[
+                          BoxShadow(
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.black.withOpacity(0.3)
+                                : Colors.black.withOpacity(0.05),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 28,
+                          height: 28,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: isSelected 
+                                  ? Theme.of(context).brightness == Brightness.dark
+                                      ? Colors.orange
+                                      : Colors.green
+                                  : Theme.of(context).brightness == Brightness.dark
+                                      ? Colors.white.withOpacity(0.6)
+                                      : AppThemes.getPrimaryColor(context).withOpacity(0.5), 
+                              width: isSelected ? 3 : 2,
+                            ),
+                            color: isSelected 
+                                ? Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.orange
+                                    : Colors.green
+                                : Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white.withOpacity(0.1)
+                                    : Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: isSelected 
+                                    ? Colors.green.withOpacity(0.4)
+                                    : Theme.of(context).brightness == Brightness.dark
+                                        ? Colors.black.withOpacity(0.3)
+                                        : AppThemes.getPrimaryColor(context).withOpacity(0.1),
+                                blurRadius: isSelected ? 8 : 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: isSelected
+                              ? const Icon(
+                                  Icons.check,
+                                  size: 16,
+                                  color: Colors.white,
+                                )
+                              : Icon(
+                                  Icons.radio_button_unchecked,
+                                  size: 16,
+                                  color: Theme.of(context).brightness == Brightness.dark
+                                      ? Colors.white.withOpacity(0.7)
+                                      : AppThemes.getPrimaryColor(context).withOpacity(0.6),
+                                ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Text(
+                            option,
+                            style: GoogleFonts.notoSansBengali(
+                              fontSize: isSelected ? 20 : 18,
+                              fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                              color: textColor,
+                              letterSpacing: isSelected ? 0.2 : 0.1,
+                              height: 1.3,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+
+          const SizedBox(height: 32),
+
+          // Navigation buttons
+          Row(
+            children: [
+              // Previous button
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: _currentQuestionIndex > 0 ? _previousQuestion : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _currentQuestionIndex > 0 
+                        ? AppThemes.getSecondaryTextColor(context) 
+                        : AppThemes.getSecondaryTextColor(context).withOpacity(0.3),
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    padding: const EdgeInsets.symmetric(vertical: 18),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    shadowColor: _currentQuestionIndex > 0 
+                        ? AppThemes.getSecondaryTextColor(context).withOpacity(0.3)
+                        : Colors.transparent,
+                  ),
+                  child: Text(
+                    'Previous',
+                    style: GoogleFonts.lexend(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                ),
+              ),
+              
+              const SizedBox(width: 16),
+              
+              // Next button
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: _nextQuestion,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppThemes.getPrimaryColor(context),
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    padding: const EdgeInsets.symmetric(vertical: 18),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    shadowColor: AppThemes.getPrimaryColor(context).withOpacity(0.3),
+                  ),
+                  child: Text(
+                    _currentQuestionIndex < _totalQuestions - 1 ? 'Next' : 'Finish',
+                    style: GoogleFonts.lexend(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 20),
+        ],
+      ),
     );
   }
 
@@ -661,184 +872,379 @@ class _QuizScreenState extends State<QuizScreen> {
     }
     
     final percentage = (score / _quizWords.length * 100).round();
+    final isExcellent = percentage >= 80;
+    final isGood = percentage >= 60;
+    
     String message;
-    Color messageColor;
+    String subtitle;
+    Color accentColor;
+    Color accentLight;
+    Color accentDark;
 
-    if (percentage >= 80) {
-      message = 'Excellent! You\'re doing great!';
-      messageColor = Colors.green;
-    } else if (percentage >= 60) {
-      message = 'Good job! Keep practicing!';
-      messageColor = Colors.orange;
+    if (isExcellent) {
+      message = 'Outstanding!';
+      subtitle = 'You\'ve mastered this quiz!';
+      accentColor = AppThemes.getSuccessColor(context);
+      accentLight = AppThemes.getSuccessLightColor(context);
+      accentDark = AppThemes.getSuccessDarkColor(context);
+    } else if (isGood) {
+      message = 'Well Done!';
+      subtitle = 'Great progress, keep it up!';
+      accentColor = AppThemes.getWarningColor(context);
+      accentLight = AppThemes.getWarningLightColor(context);
+      accentDark = AppThemes.getWarningDarkColor(context);
     } else {
-      message = 'Keep studying! You\'ll improve!';
-      messageColor = Colors.red;
+      message = 'Keep Learning!';
+      subtitle = 'Practice makes perfect!';
+      accentColor = AppThemes.getPrimaryColor(context);
+      accentLight = AppThemes.getSelectionColor(context);
+      accentDark = AppThemes.getPrimaryColor(context);
     }
 
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Score circle
-            Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: const Color(0xFF1132D4).withOpacity(0.1),
-                border: Border.all(color: const Color(0xFF1132D4), width: 4),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20.0),
+      child: Column(
+        children: [
+          // Hero section with modern card design
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(40),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: Theme.of(context).brightness == Brightness.dark
+                    ? [
+                        AppThemes.getCardColor(context),
+                        AppThemes.getSurfaceColor(context),
+                      ]
+                    : [
+                        AppThemes.getCardColor(context),
+                        AppThemes.getSurfaceColor(context),
+                      ],
               ),
-              child: Center(
-                child: Text(
-                  '$score/${_quizWords.length}',
-                  style: GoogleFonts.lexend(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF1132D4),
-                  ),
+              borderRadius: BorderRadius.circular(32),
+              border: Border.all(
+                color: AppThemes.getBorderColor(context).withOpacity(0.3),
+                width: 1.5,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.black.withOpacity(0.4)
+                      : accentColor.withOpacity(0.08),
+                  blurRadius: 32,
+                  offset: const Offset(0, 12),
+                  spreadRadius: 0,
                 ),
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Score text
-            Text(
-              'Quiz Complete!',
-              style: GoogleFonts.lexend(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF2C3E50),
-              ),
-            ),
-
-            const SizedBox(height: 8),
-
-            Text(
-              'You got $score out of ${_quizWords.length} correct!',
-              style: GoogleFonts.lexend(
-                fontSize: 18,
-                color: const Color(0xFF2C3E50).withOpacity(0.7),
-              ),
-            ),
-
-            const SizedBox(height: 8),
-
-            Text(
-              '($percentage%)',
-              style: GoogleFonts.lexend(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: messageColor,
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            Text(
-              message,
-              style: GoogleFonts.lexend(
-                fontSize: 16,
-                color: messageColor,
-              ),
-              textAlign: TextAlign.center,
-            ),
-
-            const SizedBox(height: 32),
-
-            // Study More button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const FlashcardScreen(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.school),
-                label: const Text('Study More'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor: Colors.white,
-                  elevation: 0,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                BoxShadow(
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.black.withOpacity(0.2)
+                      : AppThemes.getTextColor(context).withOpacity(0.04),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                  spreadRadius: 0,
                 ),
-              ),
+              ],
             ),
+            child: Column(
+              children: [
+                // Modern score display with glassmorphism
+                TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0.0, end: 1.0),
+                  duration: const Duration(milliseconds: 1500),
+                  curve: Curves.easeOutCubic,
+                  builder: (context, value, child) {
+                    return Container(
+                      width: 200,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: RadialGradient(
+                          colors: Theme.of(context).brightness == Brightness.dark
+                              ? [
+                                  accentColor.withOpacity(0.2),
+                                  accentColor.withOpacity(0.08),
+                                  Colors.transparent,
+                                ]
+                              : [
+                                  accentLight.withOpacity(0.6),
+                                  accentColor.withOpacity(0.1),
+                                  Colors.transparent,
+                                ],
+                          stops: const [0.0, 0.7, 1.0],
+                        ),
+                        border: Border.all(
+                          color: accentColor.withOpacity(0.3),
+                          width: 2.5,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: accentColor.withOpacity(0.15),
+                            blurRadius: 40,
+                            offset: const Offset(0, 12),
+                          ),
+                          BoxShadow(
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.black.withOpacity(0.3)
+                                : accentColor.withOpacity(0.05),
+                            blurRadius: 20,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
+                      ),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          // Animated progress ring
+                          SizedBox(
+                            width: 180,
+                            height: 180,
+                            child: CircularProgressIndicator(
+                              value: value * (score / _quizWords.length),
+                              strokeWidth: 8,
+                              backgroundColor: Theme.of(context).brightness == Brightness.dark
+                                  ? accentColor.withOpacity(0.15)
+                                  : accentLight.withOpacity(0.3),
+                              valueColor: AlwaysStoppedAnimation<Color>(accentColor),
+                            ),
+                          ),
+                          // Score content
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TweenAnimationBuilder<double>(
+                                tween: Tween(begin: 0.0, end: score.toDouble()),
+                                duration: const Duration(milliseconds: 2000),
+                                curve: Curves.easeOutCubic,
+                                builder: (context, animatedScore, child) {
+                                  return Text(
+                                    '${animatedScore.round()}',
+                                    style: GoogleFonts.lexend(
+                                      fontSize: 56,
+                                      fontWeight: FontWeight.w900,
+                                      color: Theme.of(context).brightness == Brightness.dark
+                                          ? Colors.white
+                                          : accentDark,
+                                      letterSpacing: -1.5,
+                                      height: 1.0,
+                                    ),
+                                  );
+                                },
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'out of ${_quizWords.length}',
+                                style: GoogleFonts.lexend(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Theme.of(context).brightness == Brightness.dark
+                                      ? Colors.white.withOpacity(0.7)
+                                      : accentDark.withOpacity(0.6),
+                                  letterSpacing: 0.2,
+                                  height: 1.2,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
 
-            const SizedBox(height: 16),
+                const SizedBox(height: 40),
 
-            // Review button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AnswerSheetScreen(
-                        quizWords: _quizWords,
-                        userAnswers: _userAnswers,
-                        correctAnswers: _correctAnswers,
-                        questionOptions: _questionOptions,
+                // Modern title with better typography
+                TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0.0, end: 1.0),
+                  duration: const Duration(milliseconds: 1200),
+                  curve: Curves.easeOutCubic,
+                  builder: (context, value, child) {
+                    return Transform.translate(
+                      offset: Offset(0, 30 * (1 - value)),
+                      child: Opacity(
+                        opacity: value,
+                        child: Column(
+                          children: [
+                            Text(
+                              message,
+                              style: GoogleFonts.lexend(
+                                fontSize: 42,
+                                fontWeight: FontWeight.w800,
+                                color: Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : accentDark,
+                                letterSpacing: -1.0,
+                                height: 1.1,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              subtitle,
+                              style: GoogleFonts.lexend(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white.withOpacity(0.8)
+                                    : accentDark.withOpacity(0.7),
+                                letterSpacing: 0.1,
+                                height: 1.3,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+
+                const SizedBox(height: 32),
+
+                // Modern percentage badge
+                TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0.0, end: 1.0),
+                  duration: const Duration(milliseconds: 1800),
+                  curve: Curves.easeOutCubic,
+                  builder: (context, value, child) {
+                    return Transform.scale(
+                      scale: value,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: Theme.of(context).brightness == Brightness.dark
+                                ? [
+                                    accentColor.withOpacity(0.2),
+                                    accentColor.withOpacity(0.1),
+                                  ]
+                                : [
+                                    accentLight.withOpacity(0.8),
+                                    accentColor.withOpacity(0.1),
+                                  ],
+                          ),
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(
+                            color: accentColor.withOpacity(0.4),
+                            width: 1.5,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: accentColor.withOpacity(0.2),
+                              blurRadius: 20,
+                              offset: const Offset(0, 8),
+                            ),
+                            BoxShadow(
+                              color: Theme.of(context).brightness == Brightness.dark
+                                  ? Colors.black.withOpacity(0.3)
+                                  : accentColor.withOpacity(0.05),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: TweenAnimationBuilder<double>(
+                          tween: Tween(begin: 0.0, end: percentage.toDouble()),
+                          duration: const Duration(milliseconds: 2500),
+                          curve: Curves.easeOutCubic,
+                          builder: (context, animatedPercentage, child) {
+                            return Text(
+                              '${animatedPercentage.round()}%',
+                              style: GoogleFonts.lexend(
+                                fontSize: 36,
+                                fontWeight: FontWeight.w800,
+                                color: Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white
+                                    : accentDark,
+                                letterSpacing: -0.5,
+                                height: 1.0,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+
+                const SizedBox(height: 48),
+
+                // Modern action buttons with better spacing
+                Column(
+                  children: [
+                    // Primary action button
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const FlashcardScreen(),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.school_rounded, size: 24),
+                        label: const Text('Continue Learning'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: accentColor,
+                          foregroundColor: Colors.white,
+                          elevation: 0,
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 32),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          shadowColor: accentColor.withOpacity(0.4),
+                        ),
                       ),
                     ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF6C757D),
-                  foregroundColor: Colors.white,
-                  elevation: 0,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: Text(
-                  'Review Quiz',
-                  style: GoogleFonts.lexend(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
 
-            const SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
-            // Restart button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _restartQuiz,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1132D4),
-                  foregroundColor: Colors.white,
-                  elevation: 0,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                    // Secondary action button
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AnswerSheetScreen(
+                                quizWords: _quizWords,
+                                userAnswers: _userAnswers,
+                                correctAnswers: _correctAnswers,
+                                questionOptions: _questionOptions,
+                              ),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.quiz_rounded, size: 24),
+                        label: const Text('Review Answers'),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : accentDark,
+                          side: BorderSide(
+                            color: accentColor.withOpacity(0.4),
+                            width: 1.5,
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 32),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                child: Text(
-                  'Take Another Quiz',
-                  style: GoogleFonts.lexend(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+
+          const SizedBox(height: 32),
+        ],
       ),
     );
   }

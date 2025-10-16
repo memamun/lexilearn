@@ -5,6 +5,7 @@ import '../models/vocabulary.dart';
 import '../services/vocab_loader.dart';
 import '../services/favorites_service.dart';
 import '../services/learning_stats_service.dart';
+import '../utils/app_themes.dart';
 import 'quiz_screen.dart';
 
 /// Flashcard screen for learning vocabulary
@@ -228,7 +229,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: const Color(0xFF1132D4),
+        backgroundColor: AppThemes.getPrimaryColor(context),
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -248,20 +249,24 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F8),
+      backgroundColor: AppThemes.getBackgroundColor(context),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF6F6F8),
+        backgroundColor: AppThemes.getBackgroundColor(context),
         elevation: 0,
+        surfaceTintColor: Colors.transparent,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF2C3E50)),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: AppThemes.getTextColor(context),
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'Flashcards',
           style: GoogleFonts.lexend(
             fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF2C3E50),
+            fontWeight: FontWeight.w600,
+            color: AppThemes.getTextColor(context),
           ),
         ),
         centerTitle: true,
@@ -269,14 +274,18 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
           IconButton(
             icon: Icon(
               _isShuffled ? Icons.shuffle : Icons.shuffle,
-              color: const Color(0xFF2C3E50),
+              color: AppThemes.getTextColor(context),
             ),
             onPressed: _shuffleCards,
           ),
         ],
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(AppThemes.getPrimaryColor(context)),
+              ),
+            )
           : _showSessionComplete
               ? _buildSessionCompleteScreen()
               : _vocabularyList.isEmpty
@@ -285,7 +294,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                         'No vocabulary found',
                         style: GoogleFonts.lexend(
                           fontSize: 18,
-                          color: const Color(0xFF2C3E50),
+                          color: AppThemes.getTextColor(context),
                         ),
                       ),
                     )
@@ -319,7 +328,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                                '${_currentIndex + 1} of ${_vocabularyList.length}',
                                style: GoogleFonts.lexend(
                                  fontSize: 14,
-                                 color: const Color(0xFF2C3E50).withOpacity(0.7),
+                                 color: AppThemes.getSecondaryTextColor(context),
                                ),
                              ),
                              if (_sessionReviewWords.isNotEmpty) ...[
@@ -381,7 +390,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                         'Tap card to flip',
                         style: GoogleFonts.lexend(
                           fontSize: 14,
-                          color: const Color(0xFF2C3E50).withOpacity(0.6),
+                          color: AppThemes.getSecondaryTextColor(context),
                         ),
                       ),
                     ),
@@ -411,7 +420,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                                 ),
                               ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFE0E0F8),
+                                backgroundColor: AppThemes.getPrimaryColor(context).withOpacity(0.1),
                                 elevation: 0,
                                 padding: const EdgeInsets.symmetric(vertical: 16),
                                 shape: RoundedRectangleBorder(
@@ -428,7 +437,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                             'Swipe right for Known • Swipe left for Unknown • Or tap buttons below',
                             style: GoogleFonts.lexend(
                               fontSize: 14,
-                              color: const Color(0xFF2C3E50).withOpacity(0.7),
+                                color: AppThemes.getSecondaryTextColor(context),
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -443,8 +452,8 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                                   icon: const Icon(Icons.close, size: 20),
                                    label: const Text('Unknown'),
                                    style: ElevatedButton.styleFrom(
-                                     backgroundColor: const Color(0xFFE0E0F8), // Light blue like secondary buttons
-                                     foregroundColor: const Color(0xFF2C3E50), // Dark text like other buttons
+                                     backgroundColor: AppThemes.getPrimaryColor(context).withOpacity(0.1), // Light blue like secondary buttons
+                                     foregroundColor: AppThemes.getTextColor(context), // Dark text like other buttons
                                      elevation: 1,
                                     padding: const EdgeInsets.symmetric(vertical: 16),
                                     shape: RoundedRectangleBorder(
@@ -460,7 +469,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                                   icon: const Icon(Icons.check, size: 20),
                                    label: const Text('Known'),
                                    style: ElevatedButton.styleFrom(
-                                     backgroundColor: const Color(0xFF1132D4), // Main app blue
+                                     backgroundColor: AppThemes.getPrimaryColor(context), // Main app blue
                                      foregroundColor: Colors.white,
                                      elevation: 1,
                                     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -494,11 +503,13 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
       width: double.infinity,
       height: 300,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppThemes.getCardColor(context),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.black.withOpacity(0.3)
+                : Colors.black.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -522,7 +533,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                   style: GoogleFonts.lexend(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: AppThemes.getCardColor(context),
                   ),
                 ),
               ),
@@ -537,7 +548,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                 style: GoogleFonts.lexend(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: const Color(0xFF2C3E50),
+                  color: AppThemes.getTextColor(context),
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -559,11 +570,13 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
       width: double.infinity,
       height: 300,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppThemes.getCardColor(context),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.black.withOpacity(0.3)
+                : Colors.black.withOpacity(0.1),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -577,10 +590,10 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
             // Bengali meaning
             Text(
               vocabulary.bengaliMeaning,
-              style: GoogleFonts.lexend(
+              style: GoogleFonts.notoSansBengali(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF1132D4),
+                color: AppThemes.getPrimaryColor(context),
               ),
               textAlign: TextAlign.center,
             ),
@@ -591,7 +604,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
               style: GoogleFonts.lexend(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
-                color: const Color(0xFF2C3E50).withOpacity(0.8),
+                color: AppThemes.getSecondaryTextColor(context),
               ),
               textAlign: TextAlign.center,
             ),
@@ -631,7 +644,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
             style: GoogleFonts.lexend(
               fontSize: 28,
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF2C3E50),
+              color: AppThemes.getTextColor(context),
             ),
             textAlign: TextAlign.center,
           ),
@@ -642,7 +655,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppThemes.getCardColor(context),
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
@@ -659,7 +672,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                   style: GoogleFonts.lexend(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xFF2C3E50),
+                    color: AppThemes.getTextColor(context),
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -720,7 +733,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                       icon: const Icon(Icons.quiz),
                       label: const Text('Take Quiz on This Set'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF1132D4),
+                        backgroundColor: AppThemes.getPrimaryColor(context),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
@@ -747,8 +760,8 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                   icon: const Icon(Icons.refresh),
                   label: const Text('Start New Session'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFE0E0F8),
-                    foregroundColor: const Color(0xFF1132D4),
+                    backgroundColor: AppThemes.getPrimaryColor(context).withOpacity(0.1),
+                    foregroundColor: AppThemes.getPrimaryColor(context),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -804,7 +817,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
           label,
           style: GoogleFonts.lexend(
             fontSize: 14,
-            color: const Color(0xFF2C3E50).withOpacity(0.7),
+                                color: AppThemes.getSecondaryTextColor(context),
           ),
         ),
       ],

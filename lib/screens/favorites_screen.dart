@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/vocabulary.dart';
 import '../services/favorites_service.dart';
+import '../utils/app_themes.dart';
 import 'flashcard_screen.dart';
 
 /// Favorites screen for managing saved vocabulary words
@@ -90,14 +91,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             onPressed: () => Navigator.pop(context, false),
             child: Text(
               'Cancel',
-              style: GoogleFonts.lexend(color: const Color(0xFF2C3E50)),
+              style: GoogleFonts.lexend(color: AppThemes.getTextColor(context)),
             ),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             child: Text(
               'Confirm',
-              style: GoogleFonts.lexend(color: const Color(0xFF1132D4)),
+              style: GoogleFonts.lexend(color: AppThemes.getPrimaryColor(context)),
             ),
           ),
         ],
@@ -110,7 +111,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: const Color(0xFF1132D4),
+        backgroundColor: AppThemes.getPrimaryColor(context),
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -130,27 +131,31 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F8),
+      backgroundColor: AppThemes.getBackgroundColor(context),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF6F6F8),
+        backgroundColor: AppThemes.getBackgroundColor(context),
         elevation: 0,
+        surfaceTintColor: Colors.transparent,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF2C3E50)),
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: AppThemes.getTextColor(context),
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
           'Favorites',
           style: GoogleFonts.lexend(
             fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF2C3E50),
+            fontWeight: FontWeight.w600,
+            color: AppThemes.getTextColor(context),
           ),
         ),
         centerTitle: true,
         actions: _favorites.isNotEmpty
             ? [
                 PopupMenuButton<String>(
-                  icon: const Icon(Icons.more_vert, color: Color(0xFF2C3E50)),
+                  icon: Icon(Icons.more_vert, color: AppThemes.getTextColor(context)),
                   onSelected: (value) {
                     if (value == 'clear_all') {
                       _clearAllFavorites();
@@ -167,7 +172,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             : null,
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(AppThemes.getPrimaryColor(context)),
+              ),
+            )
           : _favorites.isEmpty
               ? _buildEmptyState()
               : _buildFavoritesList(),
@@ -185,7 +194,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             Icon(
               Icons.favorite_border,
               size: 80,
-              color: const Color(0xFF2C3E50).withOpacity(0.3),
+              color: AppThemes.getSecondaryTextColor(context).withOpacity(0.3),
             ),
             const SizedBox(height: 24),
             Text(
@@ -193,7 +202,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               style: GoogleFonts.lexend(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF2C3E50),
+                color: AppThemes.getTextColor(context),
               ),
             ),
             const SizedBox(height: 8),
@@ -201,7 +210,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               'Add words to your favorites while studying flashcards to see them here.',
               style: GoogleFonts.lexend(
                 fontSize: 16,
-                color: const Color(0xFF2C3E50).withOpacity(0.7),
+                color: AppThemes.getSecondaryTextColor(context),
               ),
               textAlign: TextAlign.center,
             ),
@@ -216,7 +225,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               icon: const Icon(Icons.style),
               label: const Text('Start Studying'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF1132D4),
+                backgroundColor: AppThemes.getPrimaryColor(context),
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 shape: RoundedRectangleBorder(
@@ -244,7 +253,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 style: GoogleFonts.lexend(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: const Color(0xFF2C3E50).withOpacity(0.7),
+                  color: AppThemes.getSecondaryTextColor(context),
                 ),
               ),
               const Spacer(),
@@ -313,16 +322,16 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         style: GoogleFonts.lexend(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF2C3E50),
+                          color: AppThemes.getTextColor(context),
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         vocabulary.bengaliMeaning,
-                        style: GoogleFonts.lexend(
+                        style: GoogleFonts.notoSansBengali(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: const Color(0xFF1132D4),
+                          color: AppThemes.getPrimaryColor(context),
                         ),
                       ),
                       const SizedBox(height: 2),
@@ -330,7 +339,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         vocabulary.englishDefinition,
                         style: GoogleFonts.lexend(
                           fontSize: 12,
-                          color: const Color(0xFF2C3E50).withOpacity(0.7),
+                          color: AppThemes.getSecondaryTextColor(context),
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -381,15 +390,15 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               style: GoogleFonts.lexend(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: const Color(0xFF2C3E50),
+                color: AppThemes.getTextColor(context),
               ),
             ),
             const SizedBox(height: 4),
             Text(
               vocabulary.bengaliMeaning,
-              style: GoogleFonts.lexend(
+              style: GoogleFonts.notoSansBengali(
                 fontSize: 16,
-                color: const Color(0xFF1132D4),
+                color: AppThemes.getPrimaryColor(context),
               ),
             ),
             const SizedBox(height: 16),
@@ -398,7 +407,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               style: GoogleFonts.lexend(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: const Color(0xFF2C3E50),
+                color: AppThemes.getTextColor(context),
               ),
             ),
             const SizedBox(height: 4),
@@ -406,7 +415,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               vocabulary.englishDefinition,
               style: GoogleFonts.lexend(
                 fontSize: 16,
-                color: const Color(0xFF2C3E50),
+                color: AppThemes.getTextColor(context),
               ),
             ),
           ],
@@ -416,7 +425,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Close',
-              style: GoogleFonts.lexend(color: const Color(0xFF1132D4)),
+              style: GoogleFonts.lexend(color: AppThemes.getPrimaryColor(context)),
             ),
           ),
         ],

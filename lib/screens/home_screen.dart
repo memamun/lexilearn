@@ -5,12 +5,9 @@ import 'flashcard_screen.dart';
 import 'quiz_screen.dart';
 import 'vocab_list_screen.dart';
 import 'statistics_screen.dart';
-import '../services/favorites_service.dart';
+import 'settings_screen.dart';
 import '../services/quiz_state_service.dart';
 import '../services/learning_stats_service.dart';
-import '../services/quiz_settings_service.dart';
-import '../services/theme_service.dart';
-import '../utils/theme_notifier.dart';
 import '../utils/app_themes.dart';
 import '../services/vocab_loader.dart';
 
@@ -70,7 +67,10 @@ class HomeScreen extends StatelessWidget {
               size: 22,
             ),
             onPressed: () {
-              _showSettingsDialog(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsScreen()),
+              );
             },
           ),
           IconButton(
@@ -104,8 +104,11 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 20),
               
               // Progress Snapshot Section
-              _buildProgressSnapshot(context),
-                    const SizedBox(height: 16),
+              // _buildProgressSnapshot(context),
+              //       const SizedBox(height: 16),
+              
+              // Made with love footer
+              _buildMadeWithLoveFooter(context),
             ],
           ),
         ),
@@ -207,409 +210,9 @@ class HomeScreen extends StatelessWidget {
   }
 
 
-  /// Show settings dialog
-  void _showSettingsDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            'Settings',
-            style: GoogleFonts.lexend(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: AppThemes.getTextColor(context),
-            ),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: Icon(Icons.quiz, color: AppThemes.getPrimaryColor(context)),
-                title: Text(
-                  'Quiz Settings',
-                  style: GoogleFonts.lexend(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: AppThemes.getTextColor(context),
-                  ),
-                ),
-                subtitle: Text(
-                  'Set number of questions per quiz',
-                  style: GoogleFonts.lexend(
-                    fontSize: 14,
-                    color: AppThemes.getSecondaryTextColor(context),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  _showQuizSettingsDialog(context);
-                },
-              ),
-              const Divider(),
-              ListTile(
-                leading: Icon(Icons.palette, color: AppThemes.getPrimaryColor(context)),
-                title: Text(
-                  'Theme Settings',
-                  style: GoogleFonts.lexend(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                subtitle: Text(
-                  'Change app appearance',
-                  style: GoogleFonts.lexend(
-                    fontSize: 14,
-                    color: AppThemes.getSecondaryTextColor(context),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  _showThemeSettingsDialog(context);
-                },
-              ),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.refresh, color: Colors.red),
-                title: Text(
-                  'Reset Statistics',
-                  style: GoogleFonts.lexend(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                subtitle: Text(
-                  'Clear all learning data and statistics',
-                  style: GoogleFonts.lexend(
-                    fontSize: 14,
-                    color: AppThemes.getSecondaryTextColor(context),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  _showResetConfirmation(context);
-                },
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(
-                'Close',
-                style: GoogleFonts.lexend(
-                  color: Colors.grey[600],
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
-  /// Show quiz settings dialog
-  void _showQuizSettingsDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return FutureBuilder<int>(
-              future: QuizSettingsService.getQuestionCount(),
-              builder: (context, snapshot) {
-                int currentCount = snapshot.data ?? 5;
-                
-                return AlertDialog(
-                  title: Text(
-                    'Quiz Settings',
-                    style: GoogleFonts.lexend(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: AppThemes.getTextColor(context),
-                    ),
-                  ),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Number of Questions per Quiz',
-                        style: GoogleFonts.lexend(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: AppThemes.getTextColor(context),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: QuizSettingsService.getAvailableQuestionCounts().map((count) {
-                          final isSelected = count == currentCount;
-                          return GestureDetector(
-                            onTap: () async {
-                              await QuizSettingsService.setQuestionCount(count);
-                              setState(() {
-                                currentCount = count;
-                              });
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                              decoration: BoxDecoration(
-                                color: isSelected 
-                                    ? const Color(0xFF1132D4) 
-                                    : const Color(0xFFF5F5F5),
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color: isSelected 
-                                      ? const Color(0xFF1132D4) 
-                                      : const Color(0xFFE0E0E0),
-                                  width: 1,
-                                ),
-                              ),
-                              child: Text(
-                                '$count',
-                                style: GoogleFonts.lexend(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: isSelected 
-                                      ? Colors.white 
-                                      : const Color(0xFF2C3E50),
-                                ),
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Current setting: $currentCount questions',
-                        style: GoogleFonts.lexend(
-                          fontSize: 14,
-                          color: AppThemes.getSecondaryTextColor(context),
-                        ),
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: Text(
-                        'Done',
-                        style: GoogleFonts.lexend(
-                          color: const Color(0xFF1132D4),
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-        );
-      },
-    );
-  }
 
-  /// Show reset confirmation dialog
-  void _showResetConfirmation(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            'Reset Statistics',
-            style: GoogleFonts.lexend(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.red,
-            ),
-          ),
-          content: Text(
-            'This will permanently delete all your learning statistics, quiz history, progress, favorites, and last quiz scores. This action cannot be undone.\n\nAre you sure you want to continue?',
-            style: GoogleFonts.lexend(
-              fontSize: 14,
-              color: const Color(0xFF2C3E50),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(
-                'Cancel',
-                style: GoogleFonts.lexend(
-                  color: Colors.grey[600],
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                Navigator.of(context).pop();
-                await _resetAllStatistics();
-                _showSuccessMessage(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
-              ),
-              child: Text(
-                'Reset',
-                style: GoogleFonts.lexend(),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
-  /// Reset all statistics and learning data
-  Future<void> _resetAllStatistics() async {
-    // Reset all data
-    await FavoritesService.clearFavorites();
-    await QuizStateService.clearAllQuizData();
-    await LearningStatsService.resetLearningData();
-    await FavoritesService.clearLastQuizScore();
-  }
-
-  /// Show theme settings dialog
-  void _showThemeSettingsDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return FutureBuilder<ThemeMode>(
-              future: ThemeService.getThemeMode(),
-              builder: (context, snapshot) {
-                final currentTheme = snapshot.data ?? ThemeMode.system;
-                
-                return AlertDialog(
-                  title: Text(
-                    'Theme Settings',
-                    style: GoogleFonts.lexend(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: AppThemes.getTextColor(context),
-                    ),
-                  ),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _buildThemeOption(
-                        context,
-                        ThemeMode.light,
-                        'Light',
-                        'Use light theme',
-                        Icons.light_mode,
-                        currentTheme == ThemeMode.light,
-                        () async {
-                          await ThemeService.setThemeMode(ThemeMode.light);
-                          ThemeNotifier().updateTheme(ThemeMode.light);
-                          setState(() {});
-                        },
-                      ),
-                      _buildThemeOption(
-                        context,
-                        ThemeMode.dark,
-                        'Dark',
-                        'Use dark theme',
-                        Icons.dark_mode,
-                        currentTheme == ThemeMode.dark,
-                        () async {
-                          await ThemeService.setThemeMode(ThemeMode.dark);
-                          ThemeNotifier().updateTheme(ThemeMode.dark);
-                          setState(() {});
-                        },
-                      ),
-                      _buildThemeOption(
-                        context,
-                        ThemeMode.system,
-                        'System',
-                        'Follow system setting',
-                        Icons.settings_suggest,
-                        currentTheme == ThemeMode.system,
-                        () async {
-                          await ThemeService.setThemeMode(ThemeMode.system);
-                          ThemeNotifier().updateTheme(ThemeMode.system);
-                          setState(() {});
-                        },
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: Text(
-                        'Close',
-                        style: GoogleFonts.lexend(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: AppThemes.getPrimaryColor(context),
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-        );
-      },
-    );
-  }
-
-  /// Build theme option widget
-  Widget _buildThemeOption(
-    BuildContext context,
-    ThemeMode themeMode,
-    String title,
-    String subtitle,
-    IconData icon,
-    bool isSelected,
-    VoidCallback onTap,
-  ) {
-    return ListTile(
-      leading: Icon(
-        icon,
-        color: isSelected ? AppThemes.getPrimaryColor(context) : AppThemes.getSecondaryTextColor(context),
-      ),
-      title: Text(
-        title,
-        style: GoogleFonts.lexend(
-          fontSize: 16,
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-          color: isSelected ? AppThemes.getPrimaryColor(context) : AppThemes.getTextColor(context),
-        ),
-      ),
-      subtitle: Text(
-        subtitle,
-        style: GoogleFonts.lexend(
-          fontSize: 14,
-          color: AppThemes.getSecondaryTextColor(context),
-        ),
-      ),
-      trailing: isSelected
-          ? Icon(Icons.check, color: AppThemes.getPrimaryColor(context))
-          : null,
-      onTap: onTap,
-    );
-  }
-
-  /// Show success message after reset
-  void _showSuccessMessage(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'All statistics have been reset successfully!',
-          style: GoogleFonts.lexend(),
-        ),
-        backgroundColor: Colors.green,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-  }
 
   /// Build daily goal section
   Widget _buildDailyGoalSection(BuildContext context) {
@@ -696,7 +299,10 @@ class HomeScreen extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Colors.orange, Colors.deepOrange],
+                        colors: [
+                          AppThemes.getPrimaryColor(context),
+                          AppThemes.getPrimaryColor(context).withOpacity(0.8),
+                        ],
                       ),
                       borderRadius: BorderRadius.circular(4),
                     ),
@@ -720,102 +326,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  /// Build progress snapshot section
-  Widget _buildProgressSnapshot(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>>(
-      future: _getQuickStats(),
-      builder: (context, snapshot) {
-        final stats = snapshot.data ?? {};
-        final totalWords = stats['totalWords'] ?? 0;
-        final xp = (totalWords * 4.4).round(); // Calculate XP based on words
-        
-        return Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: AppThemes.getCardColor(context),
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.black.withOpacity(0.3)
-                    : Colors.black.withOpacity(0.08),
-                blurRadius: 12,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'PROGRESS SNAPSHOT',
-                style: GoogleFonts.lexend(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: AppThemes.getTextColor(context),
-                  letterSpacing: 1.2,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Words Mastered: $totalWords',
-                style: GoogleFonts.lexend(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: AppThemes.getTextColor(context),
-                  letterSpacing: 0.2,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Container(
-                height: 8,
-                decoration: BoxDecoration(
-                  color: AppThemes.getBorderColor(context).withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: FractionallySizedBox(
-                  alignment: Alignment.centerLeft,
-                  widthFactor: (xp / 2000).clamp(0.0, 1.0), // Assuming 2000 XP max
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.blue, Colors.lightBlue],
-                      ),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Text(
-                    'Total XP: ${xp.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
-                    style: GoogleFonts.lexend(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppThemes.getTextColor(context),
-                      letterSpacing: 0.2,
-                    ),
-                  ),
-                  const Spacer(),
-                  Text(
-                    '${xp.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}',
-                    style: GoogleFonts.lexend(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppThemes.getTextColor(context),
-                      letterSpacing: 0.2,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 
 
 
@@ -1253,6 +763,39 @@ class HomeScreen extends StatelessWidget {
         'meaning': 'The occurrence of events by chance in a happy way',
       };
     }
+  }
+
+  /// Build made with love footer
+  Widget _buildMadeWithLoveFooter(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Made with ',
+            style: GoogleFonts.lexend(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: AppThemes.getSecondaryTextColor(context),
+            ),
+          ),
+          Icon(
+            Icons.favorite,
+            color: Colors.red,
+            size: 16,
+          ),
+          Text(
+            ' by Mamun',
+            style: GoogleFonts.lexend(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: AppThemes.getSecondaryTextColor(context),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
